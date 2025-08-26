@@ -1,0 +1,221 @@
+﻿@using OCMS.Dtos
+@model IEnumerable<GetUserDto>
+@using OCMS.Common.CustomClasses
+
+@{
+    ViewBag.Title = "GetAllUser";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="content-page">
+
+    <div>
+        <div class="content">
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="page-title-box">
+                            <h4 class="page-title">Data Table</h4>
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="javascript:void(0);">Users</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:void(0);">Tables</a></li>
+                                <li class="breadcrumb-item active">Data Table</li>
+                            </ol>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+
+                <div class="page-content-wrapper">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card m-b-20">
+                                <div class="card-body">
+
+                                    <h4 class="mt-0 header-title">Default Datatable</h4>
+                                    <p class="text-muted m-b-30">
+                                        DataTables has most features enabled by
+                                        default, so all you need to do to use it with your own tables is to call
+                                        the construction function: <code>$().DataTable();</code>.
+                                    </p>
+
+                                    <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse:collapse; border-spacing:0; width:100%; font-size:14px; table-layout:fixed;">
+
+                                        <thead>
+                                            <tr>
+                                                <th>FullName</th>
+                                                <th>Email</th>
+                                                <th>Date</th>
+                                                <th>Image</th>
+                                                <th>Role</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                <tr>
+                                                    <td>@item.FullName</td>
+                                                    <td>@item.Email</td>
+                                                    <td>@item.CreatedAt</td>
+                                                    <td> <img src="@item.ImageLink" height="70" /></td>
+
+                                                    @*User Role dropdown*@
+                                                    <td>
+                                                        <select class="form-control">
+                                                            <option value="0" selected="@(item.Role==Role.Admin)">Admin</option>
+                                                            <option value="1" selected="@(item.Role==Role.User)">User</option>
+                                                        </select>
+                                                    </td>
+
+                                                    @*userstatus dropdown*@
+                                                    <td>
+                                                        <select class="form-control" onchange="UpdateStatus('@item.UserId',this.value)">
+                                                            <option value="@((int)UserStatus.Pending)" selected="@(item.Status==UserStatus.Pending)">Pending </option>
+                                                            <option value="@((int)UserStatus.Approved)" selected="@(item.Status==UserStatus.Approved)">Approved </option>
+                                                            <option value="@((int)UserStatus.Rejected)" selected="@(item.Status==UserStatus.Rejected)">Rejected </option>
+                                                            <option value="@((int)UserStatus.Suspended)" selected="@(item.Status==UserStatus.Suspended)">Suspended </option>
+                                                            <option value="@((int)UserStatus.Warning)" selected="@(item.Status==UserStatus.Warning)">Warning </option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" onclick="Delete('@item.UserId')" class="btn btn-danger">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>  ||  <button type="button" onclick="Update(@item.UserId)" class="btn btn-info">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                    </td>
+
+
+                                                </tr>
+
+                                            }
+                                        </tbody>
+
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div> <!-- end col -->
+                    </div> <!-- end row -->
+
+                </div>
+                <!-- end page content-->
+
+            </div> <!-- container-fluid -->
+
+        </div> <!-- content -->
+    </div>
+</div>
+
+
+@section Loadfiles{
+
+    <script>
+       
+
+        function UpdateStatus(userid, status) {
+
+            //$('#sa-params').click(function () {
+            //});
+
+            //Parameter
+
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Update Status !',
+                cancelButtonText: 'No, cancel!',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger m-l-10',
+                buttonsStyling: false
+            }).then(function () {
+                //logic
+                $.ajax({
+                    type: "Post",
+                    url: "/Admin/UserManager/UpdateUserStatus",
+                    data: { UserId: userid, StatusCode: status },
+                    success: function (result) {
+                        if (result == 1) {
+                            swal(
+                                'Status!',
+                                'Your Status has been Changed.',
+                                'success'
+                            )
+                        }
+                    }
+                });
+
+            }, function (dismiss) {
+                // dismiss can be 'cancel', 'overlay',
+                // 'close', and 'timer'
+                if (dismiss === 'cancel') {
+                    swal(
+                        'Cancelled',
+                        'Your imaginary file is safe :)',
+                        'error'
+                    )
+                }
+            })
+        }
+
+
+        //delete user
+
+        function Delete(userid) {
+
+
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Delete User !',
+                cancelButtonText: 'No, cancel!',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger m-l-10',
+                buttonsStyling: false
+            }).then(function () {
+                //logic
+                $.ajax({
+                    type: "Post",
+                    url: "/Admin/UserManager/RemoveUser",
+                    data: { UserId: userid },
+                    success: function (result) {
+                        if (result == @((int)OperationStatus.Success)) {
+                            swal(
+                                'Deleted!',
+                                'User has been deleted Successfully.',
+                                'success')
+
+                        }
+                        else if (result== @((int)OperationStatus.Failure)) {
+                            swal(
+                                'Deketed!',
+                                'Operation failed !',
+                                'success')
+                        }
+                    }
+                });
+
+            }, function (dismiss) {
+                // dismiss can be 'cancel', 'overlay',
+                // 'close', and 'timer'
+                if (dismiss === 'cancel') {
+                    swal(
+                        'Cancelled',
+                        'Your imaginary file is safe :)',
+                        'error'
+                    )
+                }
+            })
+        }
+
+    </script>
+}

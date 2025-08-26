@@ -1,0 +1,179 @@
+﻿@using OCMS.Common.CustomClasses
+@{
+    ViewBag.Title = "Users";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="content-page">
+
+    <div>
+        <div class="content">
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="page-title-box">
+                            <h4 class="page-title">Data Table</h4>
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="javascript:void(0);">Users</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:void(0);">Tables</a></li>
+                                <li class="breadcrumb-item active">Data Table</li>
+                            </ol>
+
+
+                        </div>
+                    </div>
+                </div>
+                <!-- end row -->
+
+                <div class="page-content-wrapper">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card m-b-20">
+                                <div class="card-body">
+
+                                    @*add id for changing the user status title*@
+
+                                    <h4 class="mt-0 header-title" id="UsersTitle"> All Users</h4>          
+                                   
+                                    @*Id for loading user page*@
+
+                                    <div id="loaduser">
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div> <!-- end col -->
+                    </div> <!-- end row -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Loadfiles {
+    <script>
+
+        $(document).ready(function () {
+             //first "AllUsers " is for Users requesttype and second one is for changing the Users status title
+            LoadUserPage('@(TempData["RequestType"] ?? "AllUsers")', 'AllUsers');
+        });
+
+        function LoadUserPage(requestType) {
+
+            $.ajax({
+                type: 'Get',
+                url: "/Admin/UserManager/GetAllUser",
+                data: { RequestType: requestType },
+                success: function (result) {
+                    $('#loaduser').html(result);
+                    $('#datatable').DataTable();
+                }
+            })
+        }
+
+ 
+         function UpdateStatus(userid, status) {
+
+     //$('#sa-params').click(function () {
+     //});
+
+     //Parameter
+
+     swal({
+         title: 'Are you sure?',
+         text: "You won't be able to revert this!",
+         type: 'warning',
+         showCancelButton: true,
+         confirmButtonText: 'Yes, Update Status !',
+         cancelButtonText: 'No, cancel!',
+         confirmButtonClass: 'btn btn-success',
+         cancelButtonClass: 'btn btn-danger m-l-10',
+         buttonsStyling: false
+     }).then(function () {
+         //logic
+         $.ajax({
+             type: "Post",
+             url: "/Admin/UserManager/UpdateUserStatus",
+             data: { UserId: userid, StatusCode: status },
+             success: function (result) {
+                 if (result == 1) {
+                     swal(
+                         'Status!',
+                         'Your Status has been Changed.',
+                         'success'
+                     )
+                 }
+             }
+         });
+
+     }, function (dismiss) {
+         // dismiss can be 'cancel', 'overlay',
+         // 'close', and 'timer'
+         if (dismiss === 'cancel') {
+             swal(
+                 'Cancelled',
+                 'Your imaginary file is safe :)',
+                 'error'
+             )
+         }
+     })
+ }
+
+
+ //delete user
+
+ function Delete(userid) {
+
+
+     swal({
+         title: 'Are you sure?',
+         text: "You won't be able to revert this!",
+         type: 'warning',
+         showCancelButton: true,
+         confirmButtonText: 'Yes, Delete User !',
+         cancelButtonText: 'No, cancel!',
+         confirmButtonClass: 'btn btn-success',
+         cancelButtonClass: 'btn btn-danger m-l-10',
+         buttonsStyling: false
+     }).then(function () {
+         //logic
+         $.ajax({
+             type: "Post",
+             url: "/Admin/UserManager/RemoveUser",
+             data: { UserId: userid },
+             success: function (result) {
+                 if (result == @((int)OperationStatus.Success)) {
+                     swal(
+                         'Deleted!',
+                         'User has been deleted Successfully.',
+                         'success')
+
+                 }
+                 else if (result== @((int)OperationStatus.Failure)) {
+                     swal(
+                         'Deketed!',
+                         'Operation failed !',
+                         'success')
+                 }
+             }
+         });
+
+     }, function (dismiss) {
+         // dismiss can be 'cancel', 'overlay',
+         // 'close', and 'timer'
+         if (dismiss === 'cancel') {
+             swal(
+                 'Cancelled',
+                 'Your imaginary file is safe :)',
+                 'error'
+             )
+         }
+     })
+ }
+
+
+    </script>
+    }

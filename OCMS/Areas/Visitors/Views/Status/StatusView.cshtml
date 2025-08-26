@@ -1,0 +1,51 @@
+﻿@model OCMS.Dtos.GetUserStatusDto
+@{
+    ViewBag.Title = "StatusView";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="content-page">
+    <!-- Start content -->
+    <div class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="page-title-box">
+                        <h4 class="page-title">Alerts</h4>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">Agroxa</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0);">UI Elements</a></li>
+                            <li class="breadcrumb-item active">Alerts</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <!-- end row -->
+
+            <div class="page-content-wrapper">
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card m-b-20">
+                            <div class="card-body">
+
+                                <h4 class="mt-0 header-title">Account Status</h4>
+                                <p class="text-muted m-b-30 ">Alerts can also contain additional HTML elements like headings and paragraphs.</p>
+
+                                <div class="">
+                                    <div class="alert alert-success" role="alert">
+                                        <h4 class="alert-heading font-18">@Model.Status</h4>
+                                        <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                                        <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

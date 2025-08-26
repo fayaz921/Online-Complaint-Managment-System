@@ -1,0 +1,67 @@
+﻿
+@using OCMS.Dtos
+@model IEnumerable<GetUserDto>
+@using OCMS.Common.CustomClasses
+
+@{ 
+    string TableName = (string)ViewBag.TableName;
+}
+
+<div style="font-size:1.3rem;color:black;font-weight:bold;" class="alert alert-custome text-center fs-4 fw-bold" >
+    @TableName
+</div>
+
+<table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse:collapse; border-spacing:0; width:100%; font-size:14px; table-layout:fixed;">
+    <thead>
+        <tr>
+            <th style="width: 13%;">FullName</th>
+            <th style="width: 20%;">Email</th>
+            <th style="width: 19%;">Date</th>
+            <th style="width: 6%;">Image</th>
+            <th style="width: 12%;">Role</th>
+            <th style="width: 13%;">Status</th>
+            <th style="width: 11%;">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.FullName</td>
+                <td>@item.Email</td>
+                <td>@item.CreatedAt</td>
+                <td> <img src="@item.ImageLink" height="70" /></td>
+
+                @*User Role dropdown*@
+                <td>
+                    <select class="form-control">
+                        <option value="0" selected="@(item.Role==Role.Admin)">Admin</option>
+                        <option value="1" selected="@(item.Role==Role.User)">User</option>
+                    </select>
+                </td>
+
+                @*userstatus dropdown*@
+                <td>
+                    <select class="form-control" onchange="UpdateStatus('@item.UserId',this.value)">
+                        <option value="@((int)UserStatus.Pending)" selected="@(item.Status==UserStatus.Pending)">Pending </option>
+                        <option value="@((int)UserStatus.Approved)" selected="@(item.Status==UserStatus.Approved)">Approved </option>
+                        <option value="@((int)UserStatus.Rejected)" selected="@(item.Status==UserStatus.Rejected)">Rejected </option>
+                        <option value="@((int)UserStatus.Suspended)" selected="@(item.Status==UserStatus.Suspended)">Suspended </option>
+                        <option value="@((int)UserStatus.Warning)" selected="@(item.Status==UserStatus.Warning)">Warning </option>
+                    </select>
+                </td>
+                <td>
+                    <button type="button" onclick="Delete('@item.UserId')" class="btn btn-danger">
+                        <i class="fas fa-trash"></i>
+                    </button>  ||  <button type="button" onclick="Update('@item.UserId')" class="btn btn-info">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </td>
+
+
+            </tr>
+
+        }
+    </tbody>
+
+</table>

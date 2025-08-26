@@ -1,0 +1,137 @@
+﻿@model OCMS.Dtos.AddUserDto
+@using OCMS.Common.CustomClasses
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Areas/Visitors/Views/Shared/_VisitorLayout.cshtml";
+}
+
+<!-- Signup Section -->
+<section class="signup-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="signup-card">
+                    <div class="signup-header">
+                        <h2>Create Your Account</h2>
+                        <p>Join our complaint management system today</p>
+                    </div>
+
+                    <form id="signupForm" class="signup-form" enctype="multipart/form-data" onsubmit="RegisterUser(event)" novalidate>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="firstName">First Name</label>
+                                    <input type="text" id="firstName" name="FirstName" required placeholder="Enter your first name">
+                                    <i class="fas fa-user input-icon"></i>
+                                    <div class="invalid-feedback">Please enter your first name</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="lastName">Last Name</label>
+                                    <input type="text" id="lastName" name="LastName" required placeholder="Enter your last name">
+                                    <i class="fas fa-user input-icon"></i>
+                                    <div class="invalid-feedback">Please enter your last name</div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="Email" required placeholder="Enter your email">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <div class="invalid-feedback">Please enter a valid email address</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input type="password" id="password" name="Password" required
+                                           pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$"
+                                           placeholder="Create a password">
+                                    <i class="fas fa-lock input-icon"></i>
+
+                                    @*<div class="invalid-feedback">
+                                            Password must be at least 8 characters with 1 uppercase, 1 lowercase, and 1 number
+                                        </div>*@
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="confirmPassword">Confirm Password</label>
+                                    <input type="password" id="confirmPassword" required
+                                           placeholder="Confirm your password">
+                                    <i class="fas fa-lock input-icon"></i>
+                                    <div class="invalid-feedback">Passwords must match</div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="image">Upload Image</label>
+                            <input type="file" id="image" name="Imagefile">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <div class="invalid-feedback">Please Upload image</div>
+                        </div>
+
+
+
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" id="terms" required>
+                            <label class="form-check-label" for="terms">
+                                I agree to the <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a>
+                            </label>
+                            <div class="invalid-feedback">You must agree to the terms</div>
+                        </div>
+
+                        <button type="submit" class="signup-btn">Create Account</button>
+
+                        <div class="signup-footer">
+                            Already have an account? <a href="@Url.Action("Login", "Account", new { area = "Users" })">Sign in</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="~/Assets/assets/js/jquery.min.js"></script>
+
+<script>
+    function RegisterUser(event) {
+        event.preventDefault();
+        var frmdata = new FormData(document.getElementById("signupForm"));
+        debugger;
+        $.ajax({
+            type: "Post",
+            url: "/Users/Account/AddUser",
+            data: frmdata,
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                if (result== @((int)OperationStatus.Success)) {
+                    alert("Register Successfully");
+                    //window.location.href = "/Users/Account/Login";
+                }
+                else if (result== @((int)OperationStatus.EmailDuplicate)) {
+
+                    const submitBtn = signupForm.querySelector('button[type="submit"]');
+
+                    alert("Email already Exist");
+                    setTimeout(() => {
+                        submitBtn.innerHTML = 'Try Again!';
+
+                        setTimeout(() => {
+                            submitBtn.innerHTML = 'Create Account';
+                        }, 1000);
+                    }, 2000);
+                }
+            }
+        })
+    }
+
+</script>
