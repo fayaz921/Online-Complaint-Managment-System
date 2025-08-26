@@ -7,7 +7,7 @@ using System.Web;
 
 namespace OCMS.Dtos.ComplaintDtos
 {
-    public class ComplaintDto
+    public class AddComplaintDto
     {
       
         public string Title { get; set; } = string.Empty;

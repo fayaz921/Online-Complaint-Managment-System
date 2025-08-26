@@ -1,4 +1,5 @@
 ﻿@model OCMS.Dtos.GetUserStatusDto
+@using OCMS.Common.CustomClasses.Enums.ComplaintEnums
 @{
     ViewBag.Title = "StatusView";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
@@ -36,6 +37,23 @@
                                 <div class="">
                                     <div class="alert alert-success" role="alert">
                                         <h4 class="alert-heading font-18">@Model.Status</h4>
+                                        @if (Model.Status == ComplaintStatus.Pending.ToString())
+                                        {
+                                            <p style="color:red" class="font-weight-bold">Your Status is still pending kindly wait for some time  </p>
+                                        }
+                                        else if (Model.Status == ComplaintStatus.Inprogress.ToString())
+                                        {
+                                            <p>Your Status is InProgress wait for some time and check again </p>
+                                        }
+                                        else if (Model.Status == ComplaintStatus.Resolved.ToString())
+                                        {
+                                            <p>Thank you for your patience your Status is Resolved </p>
+                                        }
+                                        else if (Model.Status == ComplaintStatus.Rejected.ToString())
+                                        {
+                                            <p>We are sorry! Your Status is rejected kindly submit another complaint </p>
+                                        }
+
                                         <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
                                         <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
                                     </div>

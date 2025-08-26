@@ -244,7 +244,7 @@
     <Compile Include="Common\CustomClasses\Enums\ComplaintEnums\ComplaintStatus.cs" />
     <Compile Include="Common\CustomClasses\UserRequestType.cs" />
     <Compile Include="Dtos\AddUserDto.cs" />
-    <Compile Include="Dtos\ComplaintDtos\ComplaintDto.cs" />
+    <Compile Include="Dtos\ComplaintDtos\AddComplaintDto.cs" />
     <Compile Include="Dtos\GetUserDto.cs" />
     <Compile Include="Dtos\GetUserStatusDto.cs" />
     <Compile Include="Dtos\UpdateStatusDto.cs" />
@@ -2095,6 +2095,8 @@
     <Content Include="Areas\Visitors\Views\Complaint\Complaint.cshtml" />
     <Content Include="Areas\Visitors\Views\Visitor\Index.cshtml" />
     <Content Include="Areas\Visitors\Views\Status\StatusView.cshtml" />
+    <Content Include="Areas\Visitors\Views\Visitor\About.cshtml" />
+    <Content Include="Areas\Visitors\Views\Visitor\Contact.cshtml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />

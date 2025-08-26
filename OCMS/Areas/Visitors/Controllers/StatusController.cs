@@ -15,7 +15,7 @@ namespace OCMS.Areas.Visitors.Controllers
         public ActionResult StatusView()
         {
             GetUserStatusDto getUserStatusDto = new GetUserStatusDto();
-            if(!IsExistCookie(CookiesKey.Status))
+            if(IsExistCookie(CookiesKey.Status))
             {
                 var userstatus = GetCookies(CookiesKey.Status);
                 getUserStatusDto.Status = userstatus;

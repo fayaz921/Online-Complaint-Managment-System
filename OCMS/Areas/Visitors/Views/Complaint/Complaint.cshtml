@@ -1,4 +1,4 @@
-﻿@model OCMS.Dtos.ComplaintDtos.ComplaintDto
+﻿@model OCMS.Dtos.ComplaintDtos.AddComplaintDto
 @{
     ViewBag.Title = "Complaint";
     Layout = "~/Areas/Visitors/Views/Shared/_VisitorLayout.cshtml";
@@ -26,6 +26,7 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
+
                                     <label for="complaintCategory">Category</label>
                                     <select id="complaintCategory" class="form-select" required>
                                         <option value="" selected disabled>Select category</option>
@@ -140,12 +141,19 @@
             contentType: false,
             processData: false,
             success: function (result) {
-                if (result == 1) {
-                    console.log("Hitted");
-                    alert("complaint save Successfully");
-                }
-                else {
-                    alert("Complaint Decliend! Try Again");
+
+                //if (result == 1) {
+                //    alert("complaint save Successfully");
+                //}
+                //else {
+                //    alert("Complaint Decliend! Try Again");
+                //}
+
+                if (result.redirectUrl) {
+                    // go to StatusView after complaint is saved
+                    window.location.href = result.redirectUrl;
+                } else {
+                    alert("Complaint Declined! Try Again");
                 }
             }
         })

@@ -1,4 +1,5 @@
 ﻿using OCMS.Authentication;
+using OCMS.Common.CustomClasses.Enums.ComplaintEnums;
 using OCMS.Dtos.ComplaintDtos;
 using OCMS.Services;
 using OCMS.Services.ComplaintService;
@@ -16,18 +17,36 @@ namespace OCMS.Areas.Visitors.Controllers
         private readonly ComplaintService complaintservice = new ComplaintService();
         public ActionResult Complaint()
         {
-            if(!IsExistCookie(CookiesKey.UserId))
+            if (!IsExistCookie(CookiesKey.UserId))
             {
-                return RedirectToAction("Login","Account", new {area ="Users"});
+                return RedirectToAction("Login", "Account", new { area = "Users" });
             }
             return View();
         }
 
         [HttpPost]
-        public ActionResult SaveComplaint(ComplaintDto complaintdto)
+        public ActionResult SaveComplaint(AddComplaintDto complaintdto)
         {
+            //if (!IsExistCookie(CookiesKey.Status))
+            //{
+            //    return RedirectToAction("StatusView","Status",new {area="Visitors"});
+            //}
+            //complaintservice.AddComplaintService(complaintdto);
+            // AppendCookies(CookiesKey.Status, ComplaintStatus.Pending.ToString(), DateTime.Now.AddDays(1));
+            //return Json(1,JsonRequestBehavior.AllowGet);
+
+            if (!IsExistCookie(CookiesKey.Status))
+            {
+                //return Json(new { redirectUrl = Url.Action("StatusView", "Status", new { area = "Visitors" }) });
+            }
+
             complaintservice.AddComplaintService(complaintdto);
-            return Json(1,JsonRequestBehavior.AllowGet);
+
+            AppendCookies(CookiesKey.Status, ComplaintStatus.Pending.ToString(), DateTime.Now.AddDays(1));
+
+            return Json(new { redirectUrl = Url.Action("StatusView", "Status", new { area = "Visitors" }) });
+
+
         }
     }
 }

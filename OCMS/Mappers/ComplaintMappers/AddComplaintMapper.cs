@@ -5,12 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using OCMS.Common.CustomClasses.Enums.ComplaintEnums;
 
 namespace OCMS.Mappers.ComplaintMappers
 {
     public static class AddComplaintMapper
     {
-        public static Complaint AddComplaintMap(this ComplaintDto complaint)
+        public static Complaint AddComplaintMap(this AddComplaintDto complaint)
         {
             return new Complaint
             {
@@ -20,7 +21,7 @@ namespace OCMS.Mappers.ComplaintMappers
                 Description = complaint.Description,
                 CategoryId = Guid.NewGuid(),
                 ImageUrl = complaint.ImageUrl,
-                Status = (Common.CustomClasses.Enums.ComplaintEnums.ComplaintStatus?)UserStatus.Pending,
+                Status = ComplaintStatus.Pending,
                 IncidentDate = DateTime.Now.Date,
                 TrackId = complaint.TrackId,
             };

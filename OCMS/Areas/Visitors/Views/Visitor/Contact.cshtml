@@ -1,0 +1,69 @@
+﻿
+@{
+    ViewBag.Title = "Contact";
+    Layout = "~/Areas/Visitors/Views/Shared/_VisitorLayout.cshtml";
+}
+
+<div class="container-fluid py-5" style="background-color: #f8f9fa;">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white text-center rounded-top-4">
+                    <h3 class="mb-0">Contact Us</h3>
+                    <p class="mb-0">We’re here to help with your complaints and inquiries</p>
+                </div>
+                <div class="card-body p-4">
+
+                    <!-- Contact Info -->
+                    <div class="mb-4">
+                        <h5 class="fw-bold">📞 Helpline</h5>
+                        <p class="text-muted mb-1">+92 308 9314931</p>
+
+                        <h5 class="fw-bold">✉️ Email</h5>
+                        <p class="text-muted mb-1">mfayaz21703@gmail.com</p>
+
+                        <h5 class="fw-bold">📍 Office Address</h5>
+                        <p class="text-muted">
+                            Complaint Management Office, <br />
+                            Ashina Shopping Center, DIkhan, Pakistan
+                        </p>
+                    </div>
+
+                    <hr />
+
+                    <!-- Contact Form -->
+                    <h5 class="fw-bold mb-3">Send Us a Message</h5>
+                    <form id="contactForm">
+                        <div class="mb-3">
+                            <label for="name" class="form-label fw-semibold">Your Name</label>
+                            <input type="text" id="name" class="form-control rounded-3" placeholder="Enter your name" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label fw-semibold">Your Email</label>
+                            <input type="email" id="email" class="form-control rounded-3" placeholder="Enter your email" required />
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label fw-semibold">Message</label>
+                            <textarea id="message" class="form-control rounded-3" rows="4" placeholder="Write your message here..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 rounded-3">
+                            <i class="bi bi-send-fill"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Optional: AJAX for contact form -->
+@*@section Scripts {
+        <script>
+            $("#contactForm").on("submit", function (e) {
+                e.preventDefault();
+                alert("Thank you! Your message has been sent. We’ll get back to you soon.");
+                // 🔹 Later you can call your backend API here
+            });
+        </script>
+    }*@
+

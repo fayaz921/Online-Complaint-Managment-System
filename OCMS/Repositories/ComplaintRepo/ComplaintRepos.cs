@@ -1,4 +1,5 @@
-﻿using OCMS.Common.CustomClasses.Data;
+﻿using OCMS.Common.CustomClasses;
+using OCMS.Common.CustomClasses.Data;
 using OCMS.Models;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,11 @@ namespace OCMS.Repositories.ComplaintRepo
             ocmsDbContext.Complaints.Add(complaint);
             ocmsDbContext.SaveChanges();
         }
+
+        public Complaint GetByIdrepo(Guid UserId)
+        {
+            return ocmsDbContext.Complaints.Where(u=>u.UserId == UserId).FirstOrDefault();
+        }
+
     }
 }
