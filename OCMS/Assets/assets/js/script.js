@@ -158,115 +158,115 @@ document.addEventListener('DOMContentLoaded', function() {
     // =====================
     // COMPLAINT FORM HANDLER
     // =====================
-    function setupComplaintForm() {
-        const complaintForm = document.getElementById('complaintForm');
-        if (!complaintForm) return;
+    //function setupComplaintForm() {
+    //    const complaintForm = document.getElementById('complaintForm');
+    //    if (!complaintForm) return;
 
-        const fileInput = document.getElementById('complaintFiles');
-        const filePreview = document.getElementById('filePreview');
+    //    const fileInput = document.getElementById('complaintFiles');
+    //    const filePreview = document.getElementById('filePreview');
         
-        if (fileInput && filePreview) {
-            fileInput.addEventListener('change', function() {
-                filePreview.innerHTML = '';
+    //    if (fileInput && filePreview) {
+    //        fileInput.addEventListener('change', function() {
+    //            filePreview.innerHTML = '';
                 
-                if (this.files) {
-                    Array.from(this.files).forEach(file => {
-                        if (file.type.startsWith('image/')) {
-                            const reader = new FileReader();
-                            reader.onload = function(event) {
-                                const previewItem = document.createElement('div');
-                                previewItem.className = 'file-preview-item';
+    //            if (this.files) {
+    //                Array.from(this.files).forEach(file => {
+    //                    if (file.type.startsWith('image/')) {
+    //                        const reader = new FileReader();
+    //                        reader.onload = function(event) {
+    //                            const previewItem = document.createElement('div');
+    //                            previewItem.className = 'file-preview-item';
                                 
-                                const img = document.createElement('img');
-                                img.src = event.target.result;
+    //                            const img = document.createElement('img');
+    //                            img.src = event.target.result;
                                 
-                                const removeBtn = document.createElement('button');
-                                removeBtn.className = 'remove-file';
-                                removeBtn.innerHTML = '<i class="fas fa-times"></i>';
-                                removeBtn.addEventListener('click', function() {
-                                    previewItem.remove();
-                                });
+    //                            const removeBtn = document.createElement('button');
+    //                            removeBtn.className = 'remove-file';
+    //                            removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+    //                            removeBtn.addEventListener('click', function() {
+    //                                previewItem.remove();
+    //                            });
                                 
-                                previewItem.appendChild(img);
-                                previewItem.appendChild(removeBtn);
-                                filePreview.appendChild(previewItem);
-                            };
-                            reader.readAsDataURL(file);
-                        } else {
-                            const previewItem = document.createElement('div');
-                            previewItem.className = 'file-preview-item';
-                            previewItem.style.display = 'flex';
-                            previewItem.style.alignItems = 'center';
-                            previewItem.style.justifyContent = 'center';
-                            previewItem.style.flexDirection = 'column';
+    //                            previewItem.appendChild(img);
+    //                            previewItem.appendChild(removeBtn);
+    //                            filePreview.appendChild(previewItem);
+    //                        };
+    //                        reader.readAsDataURL(file);
+    //                    } else {
+    //                        const previewItem = document.createElement('div');
+    //                        previewItem.className = 'file-preview-item';
+    //                        previewItem.style.display = 'flex';
+    //                        previewItem.style.alignItems = 'center';
+    //                        previewItem.style.justifyContent = 'center';
+    //                        previewItem.style.flexDirection = 'column';
                             
-                            const icon = document.createElement('i');
-                            icon.className = 'fas fa-file-alt mb-2';
-                            icon.style.fontSize = '24px';
+    //                        const icon = document.createElement('i');
+    //                        icon.className = 'fas fa-file-alt mb-2';
+    //                        icon.style.fontSize = '24px';
                             
-                            const fileName = document.createElement('span');
-                            fileName.textContent = file.name.length > 10 ? 
-                                file.name.substring(0, 7) + '...' : 
-                                file.name;
-                            fileName.style.fontSize = '12px';
-                            fileName.style.textAlign = 'center';
+    //                        const fileName = document.createElement('span');
+    //                        fileName.textContent = file.name.length > 10 ? 
+    //                            file.name.substring(0, 7) + '...' : 
+    //                            file.name;
+    //                        fileName.style.fontSize = '12px';
+    //                        fileName.style.textAlign = 'center';
                             
-                            const removeBtn = document.createElement('button');
-                            removeBtn.className = 'remove-file';
-                            removeBtn.innerHTML = '<i class="fas fa-times"></i>';
-                            removeBtn.addEventListener('click', function() {
-                                previewItem.remove();
-                            });
+    //                        const removeBtn = document.createElement('button');
+    //                        removeBtn.className = 'remove-file';
+    //                        removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+    //                        removeBtn.addEventListener('click', function() {
+    //                            previewItem.remove();
+    //                        });
                             
-                            previewItem.appendChild(icon);
-                            previewItem.appendChild(fileName);
-                            previewItem.appendChild(removeBtn);
-                            filePreview.appendChild(previewItem);
-                        }
-                    });
-                }
-            });
-        }
+    //                        previewItem.appendChild(icon);
+    //                        previewItem.appendChild(fileName);
+    //                        previewItem.appendChild(removeBtn);
+    //                        filePreview.appendChild(previewItem);
+    //                    }
+    //                });
+    //            }
+    //        });
+    //    }
 
-        complaintForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+    //    complaintForm.addEventListener('submit', function(e) {
+    //        e.preventDefault();
             
-            if (!this.checkValidity()) {
-                e.stopPropagation();
-                this.classList.add('was-validated');
-                return;
-            }
+    //        if (!this.checkValidity()) {
+    //            e.stopPropagation();
+    //            this.classList.add('was-validated');
+    //            return;
+    //        }
             
-            const submitBtn = complaintForm.querySelector('button[type="submit"]');
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
-            submitBtn.disabled = true;
+    //        const submitBtn = complaintForm.querySelector('button[type="submit"]');
+    //        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+    //        submitBtn.disabled = true;
             
-            setTimeout(() => {
-                const complaintId = 'C-' + Math.floor(1000 + Math.random() * 9000);
+    //        setTimeout(() => {
+    //            const complaintId = 'C-' + Math.floor(1000 + Math.random() * 9000);
                 
-                const successModal = new bootstrap.Modal(document.getElementById('complaintSuccessModal'));
-                document.getElementById('complaintIdDisplay').textContent = complaintId;
-                successModal.show();
+    //            const successModal = new bootstrap.Modal(document.getElementById('complaintSuccessModal'));
+    //            document.getElementById('complaintIdDisplay').textContent = complaintId;
+    //            successModal.show();
                 
-                submitBtn.innerHTML = 'Submit Complaint';
-                submitBtn.disabled = false;
-                this.reset();
-                this.classList.remove('was-validated');
-                document.getElementById('filePreview').innerHTML = '';
+    //            submitBtn.innerHTML = 'Submit Complaint';
+    //            submitBtn.disabled = false;
+    //            this.reset();
+    //            this.classList.remove('was-validated');
+    //            document.getElementById('filePreview').innerHTML = '';
                 
-                document.getElementById('complaintSuccessModal').addEventListener('hidden.bs.modal', function () {
-                    // window.location.href = 'dashboard.html';
-                });
-            }, 1500);
-        });
+    //            document.getElementById('complaintSuccessModal').addEventListener('hidden.bs.modal', function () {
+    //                // window.location.href = 'dashboard.html';
+    //            });
+    //        }, 1500);
+    //    });
 
-        const dateInput = document.getElementById('complaintDate');
-        if (dateInput) {
-            const today = new Date().toISOString().split('T')[0];
-            dateInput.value = today;
-            dateInput.max = today;
-        }
-    }
+    //    const dateInput = document.getElementById('complaintDate');
+    //    if (dateInput) {
+    //        const today = new Date().toISOString().split('T')[0];
+    //        dateInput.value = today;
+    //        dateInput.max = today;
+    //    }
+    //}
 
     // =====================
     // TRACK COMPLAINT FORM HANDLER
@@ -453,10 +453,6 @@ function setupFeedbackForm() {
         });
     }
 
-    //function setupTestimonials() {
-    //    console.log("Testimonials initialized");
-    //    // add testimonials logic here
-    //}
 
 
     // =====================
@@ -468,10 +464,9 @@ function setupFeedbackForm() {
         setupQuickComplaintButton();
         setupLoginForm();
         setupSignupForm(); 
-        setupComplaintForm();
+        //setupComplaintForm();
         setupTrackForm();
         setupFeedbackForm();
-        //setupTestimonials();
         initTeamCarousel();
     }
 

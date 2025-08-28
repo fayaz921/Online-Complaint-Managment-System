@@ -244,11 +244,13 @@
     <Compile Include="Common\CustomClasses\Enums\ComplaintEnums\ComplaintStatus.cs" />
     <Compile Include="Common\CustomClasses\UserRequestType.cs" />
     <Compile Include="Dtos\AddUserDto.cs" />
+    <Compile Include="Dtos\CategoryDtos\GetCategoryDto.cs" />
     <Compile Include="Dtos\ComplaintDtos\AddComplaintDto.cs" />
     <Compile Include="Dtos\GetUserDto.cs" />
     <Compile Include="Dtos\GetUserStatusDto.cs" />
     <Compile Include="Dtos\UpdateStatusDto.cs" />
     <Compile Include="Dtos\UserLoginDto.cs" />
+    <Compile Include="Mappers\CategoryMappers\GetCategoryMapper.cs" />
     <Compile Include="Mappers\ComplaintMappers\AddComplaintMapper.cs" />
     <Compile Include="Mappers\GetUserListMapper.cs" />
     <Compile Include="Mappers\UpdateStatusMapper.cs" />
@@ -258,9 +260,15 @@
     <Compile Include="Migrations\20250823165639_addnewEntities.Designer.cs">
       <DependentUpon>20250823165639_addnewEntities.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20250827181758_add-LocationinComplaintEntity.cs" />
+    <Compile Include="Migrations\20250827181758_add-LocationinComplaintEntity.Designer.cs">
+      <DependentUpon>20250827181758_add-LocationinComplaintEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repositories\CategoryRepos\CategoryRepo.cs" />
     <Compile Include="Repositories\ComplaintRepo\ComplaintRepos.cs" />
     <Compile Include="Repositories\UserCreadentialRepository.cs" />
     <Compile Include="Repositories\UserRepos.cs" />
+    <Compile Include="Services\CategoryService\CategoryService.cs" />
     <Compile Include="Services\ComplaintService\ComplaintService.cs" />
     <Compile Include="Services\UserServices.cs" />
     <Compile Include="Common\CustomClasses\PasswordEncryptor.cs" />

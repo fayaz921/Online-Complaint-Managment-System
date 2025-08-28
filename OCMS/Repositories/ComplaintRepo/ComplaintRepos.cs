@@ -8,19 +8,25 @@ using System.Web;
 
 namespace OCMS.Repositories.ComplaintRepo
 {
-    
+
     public class ComplaintRepos
     {
         private readonly OcmsDbContext ocmsDbContext = new OcmsDbContext();
-        public void AddComplaintRepo(Complaint complaint)
+        public int AddComplaintRepo(Complaint complaint)
         {
-            ocmsDbContext.Complaints.Add(complaint);
-            ocmsDbContext.SaveChanges();
+            if (complaint != null)
+            {
+                ocmsDbContext.Complaints.Add(complaint);
+                ocmsDbContext.SaveChanges();
+                return (int)OperationStatus.Success;
+            }
+            return (int)OperationStatus.Failure;
+
         }
 
         public Complaint GetByIdrepo(Guid UserId)
         {
-            return ocmsDbContext.Complaints.Where(u=>u.UserId == UserId).FirstOrDefault();
+            return ocmsDbContext.Complaints.Where(u => u.UserId == UserId).FirstOrDefault();
         }
 
     }

@@ -16,6 +16,8 @@ namespace OCMS.Models
         public string ImageUrl { get; set; }  = string.Empty;
         public ComplaintStatus? Status { get; set; }
 
+        public string Location { get; set; } = string.Empty;
+
         public DateTime? IncidentDate { get; set; }
 
         public int TrackId { get; set; } 

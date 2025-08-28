@@ -1,7 +1,13 @@
 ﻿@model OCMS.Dtos.ComplaintDtos.AddComplaintDto
+@using OCMS.Services.CategoryService
+@using OCMS.Common.CustomClasses
 @{
     ViewBag.Title = "Complaint";
     Layout = "~/Areas/Visitors/Views/Shared/_VisitorLayout.cshtml";
+
+    CategoryService categoryService = new CategoryService();
+
+    var CategoryList = categoryService.GetAllService();
 }
 
 <!-- Complaint Registration Section -->
@@ -15,7 +21,7 @@
                         <p>Please provide complete details about your issue</p>
                     </div>
 
-                    <form id="complaintForm" class="complaint-form" onsubmit="Complaint(event)" novalidate>
+                    <form id="complaintForm" class="complaint-form" enctype="multipart/form-data" onsubmit="Complaint(event)" novalidate>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -28,14 +34,12 @@
                                 <div class="form-group">
 
                                     <label for="complaintCategory">Category</label>
-                                    <select id="complaintCategory" class="form-select" required>
+                                    <select id="complaintCategory" class="form-select" required name="CategoryId">
                                         <option value="" selected disabled>Select category</option>
-                                        <option value="electricity">Electricity Issue</option>
-                                        <option value="water">Water Supply</option>
-                                        <option value="sanitation">Sanitation</option>
-                                        <option value="road">Road Maintenance</option>
-                                        <option value="noise">Noise Pollution</option>
-                                        <option value="other">Other</option>
+                                        @foreach (var item in CategoryList)
+                                        {
+                                            <option value='@item.CategoryId'>@item.CategoryName</option>
+                                        }
                                     </select>
                                     <div class="invalid-feedback">Please select a category</div>
                                 </div>
@@ -53,7 +57,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="complaintLocation">Location</label>
-                                    <input type="text" id="complaintLocation" required
+                                    <input type="text" id="complaintLocation" name="Location" required
                                            placeholder="Street address or landmark">
                                     <div class="invalid-feedback">Please specify location</div>
                                 </div>
@@ -71,8 +75,8 @@
                             <label>Upload Evidence (Optional)</label>
                             <div class="file-upload-wrapper">
                                 <input type="file" id="complaintFiles" multiple
-                                       accept="image/*,.pdf,.doc,.docx"
-                                       class="file-upload-input">
+                                       accept="image/*,.pdf,.doc,.docx" name="ImageFile"
+                                       class="file-upload-input"> 
                                 <label for="complaintFiles" class="file-upload-label">
                                     <i class="fas fa-cloud-upload-alt me-2"></i>
                                     <span>Choose files or drag them here</span>
@@ -102,30 +106,6 @@
 </section>
 
 
-
-<!-- Submission Success Modal -->
-<div class="modal fade" id="complaintSuccessModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-success text-white">
-                <h5 class="modal-title"><i class="fas fa-check-circle me-2"></i>Complaint Registered</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center py-4">
-                <i class="fas fa-check-circle text-success mb-3" style="font-size: 3rem;"></i>
-                <h4>Your complaint has been registered!</h4>
-                <p class="mb-0">Complaint ID: <strong id="complaintIdDisplay">C-XXXX</strong></p>
-                <p>Please wait while we process your request.</p>
-            </div>
-            <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Continue</button>
-                <a href="track-complaint.html" class="btn btn-outline-success">Track Complaint</a>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 <script src="~/Assets/assets/js/jquery.min.js"></script>
 
 <script>
@@ -142,17 +122,14 @@
             processData: false,
             success: function (result) {
 
-                //if (result == 1) {
-                //    alert("complaint save Successfully");
-                //}
-                //else {
-                //    alert("Complaint Decliend! Try Again");
-                //}
-
-                if (result.redirectUrl) {
-                    // go to StatusView after complaint is saved
-                    window.location.href = result.redirectUrl;
-                } else {
+                if (result && result.requestUrl) {
+                    // Redirect case
+                    window.location.href = result.requestUrl;
+                }
+                else if (result == 1) {
+                    alert("Complaint saved Successfully");
+                }
+                else {
                     alert("Complaint Declined! Try Again");
                 }
             }

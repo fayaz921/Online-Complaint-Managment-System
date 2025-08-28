@@ -40,6 +40,8 @@ namespace OCMS.Areas.Users.Controllers
                     AppendCookies(CookiesKey.UserId,response.UserId.ToString(), DateTime.Now.AddDays(2));     
                     AppendCookies(CookiesKey.Status,response.Status.ToString(), DateTime.Now.AddDays(2));     
                 }
+                AppendCookies(CookiesKey.UserId, response.UserId.ToString(), DateTime.Now.AddDays(2));
+                AppendCookies(CookiesKey.Status, response.Status.ToString(), DateTime.Now.AddDays(2));
 
                 return Json(operationStatus, JsonRequestBehavior.AllowGet);
             }

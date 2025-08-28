@@ -16,14 +16,15 @@ namespace OCMS.Mappers.ComplaintMappers
             return new Complaint
             {
                 ComplaintId = Guid.NewGuid(),
-                UserId = Guid.NewGuid(),
+                UserId = complaint.UserId,
                 Title = complaint.Title,
                 Description = complaint.Description,
-                CategoryId = Guid.NewGuid(),
+                CategoryId = complaint.CategoryId,
                 ImageUrl = complaint.ImageUrl,
                 Status = ComplaintStatus.Pending,
-                IncidentDate = DateTime.Now.Date,
-                TrackId = complaint.TrackId,
+                Location = complaint.Location,
+                IncidentDate = complaint.IncidentDate,
+                TrackId = new Random().Next(1000, 9999),   //it will generate random track id of 4 number between 1000 to 9999
             };
 
         }

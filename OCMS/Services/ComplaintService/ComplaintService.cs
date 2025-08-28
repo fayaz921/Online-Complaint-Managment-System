@@ -15,23 +15,22 @@ namespace OCMS.Services.ComplaintService
     {
         private readonly ComplaintRepos complaintrepo = new ComplaintRepos();
 
-        public void AddComplaintService(AddComplaintDto complaintdto)
+        public int AddComplaintService(AddComplaintDto complaintdto)
         {
-            //var complaint = complaintdto.AddComplaintMap();  //mapper from complaint to complaintdto 
+            if (complaintdto != null)
+            {
+                complaintrepo.AddComplaintRepo(complaintdto.AddComplaintMap());
+                return (int)OperationStatus.Success;
 
-            //complaintrepo.AddComplaintRepo(complaint);
-
-           
-            var complaint = complaintdto.AddComplaintMap();  //mapper from complaint to complaintdto 
-
-            complaintrepo.AddComplaintRepo(complaint);
+            }
+            return (int)OperationStatus.Failure;
 
         }
 
         //public Complaint Checkuserstatus(Guid Userid,UserStatus userStatus)
         //{
         //    var UserStatus = complaintrepo.GetByIdrepo(Userid);
-           
+
         //}
     }
 }
