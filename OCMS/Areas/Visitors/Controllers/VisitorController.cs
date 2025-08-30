@@ -8,6 +8,7 @@ namespace OCMS.Areas.Visitors.Controllers
 {
     public class VisitorController : Controller
     {
+
         // GET: Visitors/Visitor
         public ActionResult Index()
         {

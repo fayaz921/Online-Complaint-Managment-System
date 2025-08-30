@@ -21,5 +21,7 @@ namespace OCMS.Common.CustomClasses.Data
         public DbSet<Complaint> Complaints { get; set; }
         public DbSet<ComplaintResponse>  ComplaintResponses { get; set; }
         public DbSet<Category> Categories { get; set; }
+
+        public DbSet<UserRole> UserRoles { get; set; }
     }
 } 

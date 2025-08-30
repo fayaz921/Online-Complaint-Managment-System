@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using OCMS.Common.CustomClasses;
 using System.Net.NetworkInformation;
+using System.Web.Security;
 namespace OCMS.Areas.Users.Controllers
 {
     public class AccountController : CookiesService
@@ -33,16 +34,15 @@ namespace OCMS.Areas.Users.Controllers
 
             if (response != null)
             {
-                if (!IsExistCookie(CookiesKey.UserId))     //cookies check if login info doesn't exist then save it 
-                {
-                    RemoveCookies(CookiesKey.UserId);
-                    RemoveCookies(CookiesKey.Status);
-                    AppendCookies(CookiesKey.UserId,response.UserId.ToString(), DateTime.Now.AddDays(2));     
-                    AppendCookies(CookiesKey.Status,response.Status.ToString(), DateTime.Now.AddDays(2));     
-                }
-                AppendCookies(CookiesKey.UserId, response.UserId.ToString(), DateTime.Now.AddDays(2));
-                AppendCookies(CookiesKey.Status, response.Status.ToString(), DateTime.Now.AddDays(2));
+                //if (!IsExistCookie(CookiesKey.UserId))     //cookies check if login info doesn't exist then save it 
+                //{
+                //    RemoveCookies(CookiesKey.UserId);        
+                //    AppendCookies(CookiesKey.UserId,response.UserId.ToString(), DateTime.Now.AddDays(2));
+                //    return Json(operationStatus, JsonRequestBehavior.AllowGet);
+                //}
 
+                //AppendCookies(CookiesKey.UserId, response.UserId.ToString(), DateTime.Now.AddDays(2));
+                FormsAuthentication.SetAuthCookie(response.UserId.ToString(), true);
                 return Json(operationStatus, JsonRequestBehavior.AllowGet);
             }
             return Json(operationStatus, JsonRequestBehavior.AllowGet);

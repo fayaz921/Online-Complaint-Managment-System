@@ -76,16 +76,12 @@ namespace OCMS.Services
         }
 
 
-        //public GetUserDto GetbyIDService(Guid userid)
-        //{
-        //    var user = userRepos.GetbyIdrepo(userid);
-        //    if (user == null)
-        //    {
-        //        throw new Exception("Id is not found");
-        //    }
-        //    return null;
+        public GetUserDto GetbyIDService(Guid userid)
+        {
+            return userRepos.GetbyIdrepo(userid).MapGetUserDto();
+            
 
-        //}
+        }
 
         public bool UpdateStatusService(Guid userid, UserStatus userStatus)
         {

@@ -27,10 +27,9 @@ namespace OCMS.Services.ComplaintService
 
         }
 
-        //public Complaint Checkuserstatus(Guid Userid,UserStatus userStatus)
-        //{
-        //    var UserStatus = complaintrepo.GetByIdrepo(Userid);
-
-        //}
+        public GetComplaintDto GetbyIdsevice(Guid id)
+        {
+            return complaintrepo.GetByIdrepo(id).GetComplaintMap();
+        }
     }
 }

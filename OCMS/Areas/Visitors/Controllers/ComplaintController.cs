@@ -13,40 +13,31 @@ using System.Web.Mvc;
 
 namespace OCMS.Areas.Visitors.Controllers
 {
-    public class ComplaintController : CookiesService
+    [Authorize]
+    public class ComplaintController : Controller
     {
         // GET: Visitors/Complaint
         private readonly ComplaintService complaintservice = new ComplaintService();
+        private readonly UserServices userServices = new UserServices();
         public ActionResult Complaint()
         {
-            if (!IsExistCookie(CookiesKey.UserId))
-            {
-                return RedirectToAction("Login", "Account", new { area = "Users" });
-            }
+
             return View();
         }
 
         [HttpPost]
         public ActionResult SaveComplaint(AddComplaintDto complaintdto)
         {
-
-            if (!IsExistCookie(CookiesKey.Status))
-            {
-                return Json(new { requestUrl = Url.Action("Login", "Account", new { area = "Users" }) });
-            }
-
-            var status = GetCookies(CookiesKey.Status);
-            if(status == UserStatus.Pending.ToString() 
-                || status == UserStatus.Suspended.ToString() 
-                || status == UserStatus.Rejected.ToString() )
+            var userid = User.Identity.Name;
+            var user = userServices.GetbyIDService(Guid.Parse(userid));
+            if (user.Status == UserStatus.Pending || user.Status == UserStatus.Suspended || user.Status == UserStatus.Rejected)
             {
                 return Json(new { requestUrl = Url.Action("StatusView", "Status", new { area = "Visitors" }) });
             }
-               
-               
+
             complaintdto.ImageUrl = complaintdto.ImageFile != null ? ImageUpload(complaintdto.ImageFile) : null;
-            complaintdto.UserId =Guid.Parse(GetCookies(CookiesKey.UserId));
-            
+            complaintdto.UserId = Guid.Parse(userid);
+
             var response = complaintservice.AddComplaintService(complaintdto);
             return Json(response, JsonRequestBehavior.AllowGet);
         }

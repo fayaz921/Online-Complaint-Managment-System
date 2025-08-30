@@ -1,6 +1,7 @@
 ﻿using OCMS.Authentication;
 using OCMS.Common.CustomClasses;
 using OCMS.Dtos;
+using OCMS.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,14 +12,15 @@ namespace OCMS.Areas.Visitors.Controllers
 {
     public class StatusController : CookiesService
     {
+        UserServices userServices = new UserServices(); 
         // GET: Visitors/Status
         public ActionResult StatusView()
         {
             GetUserStatusDto getUserStatusDto = new GetUserStatusDto();
-            if(IsExistCookie(CookiesKey.Status))
+            if(IsExistCookie(CookiesKey.UserId))
             {
-                var userstatus = GetCookies(CookiesKey.Status);
-                getUserStatusDto.Status = userstatus;
+                var user = userServices.GetbyIDService(Guid.Parse(GetCookies(CookiesKey.UserId)));
+                getUserStatusDto.Status = (UserStatus)user.Status;
             }
             return View(getUserStatusDto);
         }

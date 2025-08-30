@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace OCMS.Areas.Admin.Controllers
 {
+    [Authorize(Roles ="Admin")]
     public class UserManagerController : Controller
     {
         // GET: Admin/UserManager

@@ -9,6 +9,6 @@ namespace OCMS.Dtos
     public class GetUserStatusDto
     {
         public Guid UserId { get; set; }
-        public string Status { get; set; }
+        public UserStatus Status { get; set; }
     }
 }

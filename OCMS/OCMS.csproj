@@ -241,17 +241,22 @@
     <Compile Include="Areas\Visitors\VisitorsAreaRegistration.cs" />
     <Compile Include="Authentication\CookiesService.cs" />
     <Compile Include="Authentication\CookiesKey.cs" />
+    <Compile Include="Authentication\UserBaseService.cs" />
     <Compile Include="Common\CustomClasses\Enums\ComplaintEnums\ComplaintStatus.cs" />
     <Compile Include="Common\CustomClasses\UserRequestType.cs" />
     <Compile Include="Dtos\AddUserDto.cs" />
     <Compile Include="Dtos\CategoryDtos\GetCategoryDto.cs" />
     <Compile Include="Dtos\ComplaintDtos\AddComplaintDto.cs" />
+    <Compile Include="Dtos\ComplaintDtos\GetComplaintDto.cs" />
     <Compile Include="Dtos\GetUserDto.cs" />
     <Compile Include="Dtos\GetUserStatusDto.cs" />
     <Compile Include="Dtos\UpdateStatusDto.cs" />
     <Compile Include="Dtos\UserLoginDto.cs" />
+    <Compile Include="Helper\EmailController.cs" />
+    <Compile Include="Helper\Emailservice\EmailService.cs" />
     <Compile Include="Mappers\CategoryMappers\GetCategoryMapper.cs" />
     <Compile Include="Mappers\ComplaintMappers\AddComplaintMapper.cs" />
+    <Compile Include="Mappers\ComplaintMappers\GetComplaintMapper.cs" />
     <Compile Include="Mappers\GetUserListMapper.cs" />
     <Compile Include="Mappers\UpdateStatusMapper.cs" />
     <Compile Include="Mappers\UserEncryptorMapper.cs" />
@@ -264,6 +269,11 @@
     <Compile Include="Migrations\20250827181758_add-LocationinComplaintEntity.Designer.cs">
       <DependentUpon>20250827181758_add-LocationinComplaintEntity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20250829184049_AddNewEntityUserRole.cs" />
+    <Compile Include="Migrations\20250829184049_AddNewEntityUserRole.Designer.cs">
+      <DependentUpon>20250829184049_AddNewEntityUserRole.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\UserRole.cs" />
     <Compile Include="Repositories\CategoryRepos\CategoryRepo.cs" />
     <Compile Include="Repositories\ComplaintRepo\ComplaintRepos.cs" />
     <Compile Include="Repositories\UserCreadentialRepository.cs" />
@@ -296,6 +306,7 @@
     </Compile>
     <Compile Include="Migrations\OcmsDbContextModelSnapshot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebProviders\WebUserProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\AdminAssets\assets\css\bootstrap.min.css" />
@@ -2102,9 +2113,9 @@
     <Content Include="Areas\Visitors\Views\Shared\_VisitorLayout.cshtml" />
     <Content Include="Areas\Visitors\Views\Complaint\Complaint.cshtml" />
     <Content Include="Areas\Visitors\Views\Visitor\Index.cshtml" />
-    <Content Include="Areas\Visitors\Views\Status\StatusView.cshtml" />
     <Content Include="Areas\Visitors\Views\Visitor\About.cshtml" />
     <Content Include="Areas\Visitors\Views\Visitor\Contact.cshtml" />
+    <Content Include="Areas\Visitors\Views\Status\StatusView.cshtml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
@@ -2131,6 +2142,7 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Areas\Admin\Views\UserManager\_loadUsers.cshtml" />
+    <Content Include="Views\Email\OtpTest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

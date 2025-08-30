@@ -2,60 +2,146 @@
 @using OCMS.Common.CustomClasses
 @{
     ViewBag.Title = "StatusView";
-    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Areas/Visitors/Views/Shared/_VisitorLayout.cshtml";
 }
 
-<div class="content-page">
-    <!-- Start content -->
-    <div class="content">
-        <div class="container-fluid">
 
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="page-title-box">
-                        <h4 class="page-title">Alerts</h4>
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="javascript:void(0);">Agroxa</a></li>
-                            <li class="breadcrumb-item"><a href="javascript:void(0);">UI Elements</a></li>
-                            <li class="breadcrumb-item active">Alerts</li>
-                        </ol>
-                    </div>
+
+<div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white text-center rounded-top-4">
+                    <h4 class="mb-0">Account Status</h4>
+                </div>
+                <div class="card-body">
+
+                    <h5 class="text-center mb-4">
+                        Your current status:
+                        <span class="badge bg-info">@Model.Status</span>
+                    </h5>
+
+                    @if (Model.Status == UserStatus.Pending)
+                    {
+                        <div class="alert alert-warning text-center fw-bold rounded-3">
+                            <i class="fas fa-hourglass-half me-2"></i>
+                            Your account is <strong>Pending</strong>. Please wait while we review your details.
+
+                            <p>This process typically takes 24-48 hours. You will receive an email notification once your account is approved. Please be patient during this verification process.</p>
+                            <p class="mb-0">If you have any urgent concerns, feel free to contact our support team.</p>
+                        </div>
+                    }
+                    else if (Model.Status == UserStatus.Rejected)
+                    {
+                        <div class="alert alert-danger text-center fw-bold rounded-3">
+                            <i class="fas fa-times-circle me-2"></i>
+                            Unfortunately, your account request has been <strong>Rejected</strong>.
+
+                            <p>
+                                Unfortunately, we were unable to approve your account at this time. This may be due to verification issues or policy violations.
+                                Please review your submitted information carefully.
+                            </p>
+                            <p class="mb-0">Contact our support team for detailed information about the rejection and guidance for reapplication.</p>
+                        </div>
+                    }
+                    else if (Model.Status == UserStatus.Suspended)
+                    {
+
+                        <div class="alert alert-dark text-center fw-bold rounded-3">
+                            <i class="fas fa-ban me-2"></i>
+                            Your account has been <strong>Suspended</strong>. Please contact support.
+
+                            <p>Your account access has been restricted due to security concerns or terms of service violations. This suspension may be temporary or permanent depending on the severity of the issue.</p>
+                            <p class="mb-0">Please contact our support team immediately to resolve this matter and restore your account access.</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-success text-center fw-bold rounded-3">
+                            <i class="fas fa-check-circle me-2"></i>
+                            Your account is <strong>Active</strong>. You can use all features.
+
+                            <p>Great! Your account is fully approved and active. You can now access all features of the complaint management system including submitting new complaints and tracking existing ones.</p>
+                            <p class="mb-0">Thank you for being a valued member of our community. We're here to help resolve your concerns efficiently.</p>
+                        </div>
+                    }
+
                 </div>
             </div>
-            <!-- end row -->
 
-            <div class="page-content-wrapper">
+        </div>
+    </div>
+</div>
 
-                <div class="row">
+
+
+
+
+
+          @*other design*@
+
+
+    <!-- Main Content -->
+    @*<div class="container mt-5 mb-5">*@
+        <!--<div class="row">
+            <div class="col-12">-->
+    <!-- Page Title -->
+    <!--<div class="row mb-4">
+        <div class="col-12">
+            <h2 class="page-title">Account Status</h2>
+            <p class="text-muted">Check your current account status and any pending actions required.</p>
+        </div>
+    </div>-->
+    <!-- Status Card -->
+    <!--<div class="row justify-content-center">
                     <div class="col-lg-6">
-                        <div class="card m-b-20">
+                        <div class="card shadow-sm">
                             <div class="card-body">
-
                                 <h4 class="mt-0 header-title">Account Status</h4>
-                                <p class="text-muted m-b-30 ">Alerts can also contain additional HTML elements like headings and paragraphs.</p>
+                                <p class="text-muted mb-4">Your current account status and related information.</p>
 
                                 <div class="">
-                                    <div class="alert alert-success" role="alert">
-                                        <h4 class="alert-heading font-18">@Model.Status</h4>
-                                        @if (Model.Status == UserStatus.Pending.ToString())
-                                        {
-                                            <p style="color:red" class="font-weight-bold">Your Status is still pending kindly wait for some time  </p>
-                                        }
-                                        else if (Model.Status == UserStatus.Rejected.ToString())
-                                        {
-                                            <p style="color:red" class="font-weight-bold">Your Status is Rejected  </p>
-                                        }
-                                        else if (Model.Status == UserStatus.Suspended.ToString())
-                                        {
-                                            <p style="color:red" class="font-weight-bold">Your Status is Suspended </p>
-                                        }
-                                       
-
-                                        <p>Aww yeah, you successfully read this important alert message.
-                                        This example text is going to run a bit longer so that
-                                        you can see how spacing within an alert works with this kind of content.</p>
-                                        <p class="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
-                                    </div>
+                                    @if (Model.Status == UserStatus.Pending)
+                                    {
+                                        <div class="alert alert-warning" role="alert">
+                                            <h4 class="alert-heading">@Model.Status</h4>
+                                            <p style="color:orange" class="font-weight-bold">Your account is currently under review. Please wait while we process your application.</p>
+                                            <hr>
+                                            <p>This process typically takes 24-48 hours. You will receive an email notification once your account is approved. Please be patient during this verification process.</p>
+                                            <p class="mb-0">If you have any urgent concerns, feel free to contact our support team.</p>
+                                        </div>
+                                    }
+                                    else if (Model.Status == UserStatus.Rejected)
+                                    {
+                                        <div class="alert alert-danger" role="alert">
+                                            <h4 class="alert-heading">@Model.Status</h4>
+                                            <p style="color:red" class="font-weight-bold">Your account application has been rejected due to incomplete or incorrect information.</p>
+                                            <hr>
+                                            <p>Unfortunately, we were unable to approve your account at this time. This may be due to verification issues or policy violations. Please review your submitted information carefully.</p>
+                                            <p class="mb-0">Contact our support team for detailed information about the rejection and guidance for reapplication.</p>
+                                        </div>
+                                    }
+                                    else if (Model.Status == UserStatus.Suspended)
+                                    {
+                                        <div class="alert alert-danger" role="alert">
+                                            <h4 class="alert-heading">@Model.Status</h4>
+                                            <p style="color:red" class="font-weight-bold">Your account has been temporarily suspended due to policy violations.</p>
+                                            <hr>
+                                            <p>Your account access has been restricted due to security concerns or terms of service violations. This suspension may be temporary or permanent depending on the severity of the issue.</p>
+                                            <p class="mb-0">Please contact our support team immediately to resolve this matter and restore your account access.</p>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-success" role="alert">
+                                            <h4 class="alert-heading">@Model.Status</h4>
+                                            <p style="color:green" class="font-weight-bold">Your account is active and in good standing.</p>
+                                            <hr>
+                                            <p>Great! Your account is fully approved and active. You can now access all features of the complaint management system including submitting new complaints and tracking existing ones.</p>
+                                            <p class="mb-0">Thank you for being a valued member of our community. We're here to help resolve your concerns efficiently.</p>
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -63,6 +149,4 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
+    </div>-->

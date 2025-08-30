@@ -126,8 +126,11 @@
                     // Redirect case
                     window.location.href = result.requestUrl;
                 }
-                else if (result == 1) {
-                    alert("Complaint saved Successfully");
+                else if (result ==@((int)UserStatus.Approved)) {
+                    alert("Complaint saved Successfully , Your account is approved now you can use all features");
+                }
+                else if (result == @((int)UserStatus.Warning)) {
+                    alert(" Complaint Saved Successfully! Your Account is in Warning kinldy follow terms and conditions")
                 }
                 else {
                     alert("Complaint Declined! Try Again");

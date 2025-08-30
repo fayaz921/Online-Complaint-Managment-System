@@ -24,9 +24,10 @@ namespace OCMS.Repositories.ComplaintRepo
 
         }
 
-        public Complaint GetByIdrepo(Guid UserId)
+        public Complaint GetByIdrepo(Guid Id)
         {
-            return ocmsDbContext.Complaints.Where(u => u.UserId == UserId).FirstOrDefault();
+            var complaint = ocmsDbContext.Complaints.Where(u => u.UserId == Id || u.ComplaintId == Id).FirstOrDefault();
+            return complaint;
         }
 
     }
