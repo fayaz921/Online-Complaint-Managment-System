@@ -112,7 +112,7 @@
 
     function Complaint(event) {
         event.preventDefault();
-        debugger;
+        var frm = document.getElementById("complaintForm")    //actual from element
         var frmdata = new FormData(document.getElementById("complaintForm"));
         $.ajax({
             type: 'Post',
@@ -121,6 +121,19 @@
             contentType: false,
             processData: false,
             success: function (result) {
+
+                if (!result.success && result.errors) {
+                    // Clear previous errors
+                    $(frm).find('.is-invalid').removeClass('is-invalid');
+
+                    // Show errors from server
+                    for (var key in result.errors) {
+                        var input = $(frm).find('[name="' + key + '"]');
+                        input.addClass('is-invalid');
+                        input.siblings('.invalid-feedback').text(result.errors[key][0]);
+                    }
+                    return;
+                }
 
                 if (result && result.requestUrl) {
                     // Redirect case
@@ -136,7 +149,37 @@
                     alert("Complaint Declined! Try Again");
                 }
             }
-        })
+        });
     }
+
+    // --- Dynamic removal of errors on user input/change ---
+    $(document).ready(function () {
+        var frm = $("#complaintForm");
+        frm.find('input, textarea, select').on('input change', function () {
+            var field = $(this);
+
+            if (field.hasClass('is-invalid')) {
+                field.removeClass('is-invalid');
+                field.siblings('.invalid-feedback').text('');
+            }
+        });
+    });
+
+    // --- Image/File Preview ---
+    $("#complaintFiles").on("change", function () {
+        $("#filePreview").html(""); // clear old previews
+        [...this.files].forEach(file => {
+            if (file.type.startsWith("image/")) {
+                let reader = new FileReader();
+                reader.onload = e => $("#filePreview").append(
+                    `<img src="${e.target.result}" style="max-width:120px; margin:5px; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.2);">`
+                );
+                reader.readAsDataURL(file);
+            } else {
+                $("#filePreview").append(`<div>${file.name}</div>`);
+            }
+        });
+    });
+    
 
 </script>

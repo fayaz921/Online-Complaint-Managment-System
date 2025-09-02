@@ -39,21 +39,45 @@
                     <li class="nav-item">
                         <a class="nav-links active" href="/Visitors/Visitor/Index">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-links" href="/Visitors/Complaint/Complaint">Submit Complaint</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-links" href="#">Track Complaint</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-links" href="/Visitors/Visitor/About">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-links" href="/Visitors/Visitor/Contact">Contact</a>
-                    </li>
-                    <li class="nav-item ms-lg-3">
-                        <a class="logins-btn" href="/Users/Account/Login">Login</a>
-                    </li>
+
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-links" href="/Visitors/Complaint/Complaint">Submit Complaint</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-links" href="#">Track Complaint</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-links" href="/Visitors/Visitor/About">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-links" href="/Visitors/Visitor/Contact">Contact</a>
+                        </li>
+                        if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item ms-lg-3">
+                                <a class="logins-btn" href="/Admin/AdminHome/Index">Admin Side</a>
+                            </li>
+                        }
+                        <li class="nav-item ms-lg-3">
+                            <a class="logins-btn" href="/Users/Account/Logout">Logout</a>
+                        </li>
+                    }
+
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-links" href="/Visitors/Visitor/About">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-links" href="/Visitors/Visitor/Contact">Contact</a>
+                        </li>
+                        <li class="nav-item ms-lg-3">
+                            <a class="logins-btn" href="/Users/Account/Login">Login</a>
+                        </li>
+                    }
+
                 </ul>
             </div>
         </div>

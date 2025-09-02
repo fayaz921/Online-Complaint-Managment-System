@@ -28,6 +28,20 @@ namespace OCMS.Areas.Visitors.Controllers
         [HttpPost]
         public ActionResult SaveComplaint(AddComplaintDto complaintdto)
         {
+
+            if(!ModelState.IsValid)
+            {
+                //collect all models error
+                var errors = ModelState.Where(x => x.Value.Errors.Count > 0)
+                    .ToDictionary(
+                    kvp => kvp.Key,
+                    kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                    );
+                return Json(new {success = false,errors}, JsonRequestBehavior.AllowGet);
+            }
+
+
+
             var userid = User.Identity.Name;
             var user = userServices.GetbyIDService(Guid.Parse(userid));
             if (user.Status == UserStatus.Pending || user.Status == UserStatus.Suspended || user.Status == UserStatus.Rejected)

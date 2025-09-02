@@ -273,6 +273,10 @@
     <Compile Include="Migrations\20250829184049_AddNewEntityUserRole.Designer.cs">
       <DependentUpon>20250829184049_AddNewEntityUserRole.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20250902181804_MakeCategoryID%28Nullable%29incomplaintEntity.cs" />
+    <Compile Include="Migrations\20250902181804_MakeCategoryID%28Nullable%29incomplaintEntity.Designer.cs">
+      <DependentUpon>20250902181804_MakeCategoryID%28Nullable%29incomplaintEntity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\UserRole.cs" />
     <Compile Include="Repositories\CategoryRepos\CategoryRepo.cs" />
     <Compile Include="Repositories\ComplaintRepo\ComplaintRepos.cs" />

@@ -58,7 +58,11 @@ namespace OCMS.Areas.Users.Controllers
             return Json(response, JsonRequestBehavior.AllowGet);
         }
 
-
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Login");
+        }
         public string ImageUpload(HttpPostedFileBase File)
         {
             try
