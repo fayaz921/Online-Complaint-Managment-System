@@ -28,5 +28,33 @@ namespace OCMS.Repositories
         {
             return ocmsDb.UsersCreadentials.Where(u => u.UserId == userid).FirstOrDefault();
         }
+
+        public void SaveOtp(Guid userid,string otp)
+        {
+            var cred = ocmsDb.UsersCreadentials.Where(x=>x.UserId == userid).FirstOrDefault();
+            if(cred != null)
+            {
+                cred.OTP = otp;
+                ocmsDb.SaveChanges();
+            }
+        }
+
+        public bool VerifyOtp(Guid userid,string otp)
+        {
+            var cred = ocmsDb.UsersCreadentials.FirstOrDefault(x=>x.UserId==userid);
+            return cred != null && cred.OTP == otp;
+        }
+
+        public void UpdatePassword(Guid userId, byte[] passwordHash, byte[] passwordSalt)
+        {
+            var cred = ocmsDb.UsersCreadentials.FirstOrDefault(c => c.UserId == userId);
+            if (cred != null)
+            {
+                cred.PasswordHash = passwordHash;
+                cred.PasswordSalt = passwordSalt;
+                cred.OTP = null;                   // clear OTP after successful reset
+                ocmsDb.SaveChanges();
+            }
+        }
     }
 }

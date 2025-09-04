@@ -107,5 +107,25 @@ namespace OCMS.Services
             return null;
         }
 
+        public GetUserDto GetUserByEmail(string email)
+        {
+            return userRepos.LoginCheckRepo(email).MapGetUserDto();
+        }
+
+        public void SaveOtp(Guid userid,string otp)
+        {
+            usercread.SaveOtp(userid,otp);
+        }
+
+        public bool VerifyOtp(Guid userid,string otp)
+        {
+            return usercread.VerifyOtp(userid,otp);
+        }
+
+        public void UpdatePassword(Guid userid,string newpassword)
+        {
+            PasswordEncryptor.CreatePasswordHashandSalt(newpassword, out byte[] hash, out byte[] salt);
+            usercread.UpdatePassword(userid, hash, salt);
+        }
     }
 }

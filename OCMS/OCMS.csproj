@@ -241,6 +241,7 @@
     <Compile Include="Areas\Visitors\VisitorsAreaRegistration.cs" />
     <Compile Include="Authentication\CookiesService.cs" />
     <Compile Include="Authentication\CookiesKey.cs" />
+    <Compile Include="Authentication\CustomModelValidator.cs" />
     <Compile Include="Authentication\UserBaseService.cs" />
     <Compile Include="Common\CustomClasses\Enums\ComplaintEnums\ComplaintStatus.cs" />
     <Compile Include="Common\CustomClasses\UserRequestType.cs" />
@@ -284,6 +285,7 @@
     <Compile Include="Repositories\UserRepos.cs" />
     <Compile Include="Services\CategoryService\CategoryService.cs" />
     <Compile Include="Services\ComplaintService\ComplaintService.cs" />
+    <Compile Include="Services\EmailOTPService.cs" />
     <Compile Include="Services\UserServices.cs" />
     <Compile Include="Common\CustomClasses\PasswordEncryptor.cs" />
     <Compile Include="Common\CustomClasses\OperationStatus.cs" />
@@ -2120,6 +2122,8 @@
     <Content Include="Areas\Visitors\Views\Visitor\About.cshtml" />
     <Content Include="Areas\Visitors\Views\Visitor\Contact.cshtml" />
     <Content Include="Areas\Visitors\Views\Status\StatusView.cshtml" />
+    <Content Include="Areas\Users\Views\Account\ForgetPassword.cshtml" />
+    <Content Include="Areas\Users\Views\Account\ResetPassword.cshtml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />

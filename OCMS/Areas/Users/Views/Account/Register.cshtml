@@ -104,6 +104,7 @@
 <script>
     function RegisterUser(event) {
         event.preventDefault();
+        var frm = document.getElementById("signupForm")    //actual from element
         var frmdata = new FormData(document.getElementById("signupForm"));
         debugger;
         $.ajax({
@@ -113,11 +114,26 @@
             contentType: false,
             processData: false,
             success: function (result) {
-                if (result== @((int)OperationStatus.Success)) {
+
+                if (!result.success && result.errors) {
+                    // Clear previous errors
+                    $(frm).find('.is-invalid').removeClass('is-invalid');
+
+                    // Show errors from server
+                    for (var key in result.errors) {
+                        var input = $(frm).find('[name="' + key + '"]');
+                        input.addClass('is-invalid');
+                        input.siblings('.invalid-feedback').text(result.errors[key][0]);
+                    }
+                    return;
+                }
+
+
+                if (result == @((int)OperationStatus.Success)) {
                     alert("Register Successfully");
                     //window.location.href = "/Users/Account/Login";
                 }
-                else if (result== @((int)OperationStatus.EmailDuplicate)) {
+                else if (result == @((int)OperationStatus.EmailDuplicate)) {
 
                     const submitBtn = signupForm.querySelector('button[type="submit"]');
 
@@ -131,7 +147,21 @@
                     }, 2000);
                 }
             }
-        })
+        });
     }
+
+
+    // --- Dynamic removal of errors on user input/change ---
+    $(document).ready(function () {
+        var frm = $("#complaintForm");
+        frm.find('input, textarea, select').on('input change', function () {
+            var field = $(this);
+
+            if (field.hasClass('is-invalid')) {
+                field.removeClass('is-invalid');
+                field.siblings('.invalid-feedback').text('');
+            }
+        });
+    });
 
 </script>

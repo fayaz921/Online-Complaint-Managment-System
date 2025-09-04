@@ -10,6 +10,7 @@ namespace OCMS.Common.CustomClasses
         Success=1,
         Failure=2,
         NotFound=3,
-        EmailDuplicate=-1
+        EmailDuplicate=-1,
+        ModelValidation=4
     }
 }

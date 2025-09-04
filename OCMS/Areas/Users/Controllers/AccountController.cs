@@ -11,8 +11,11 @@ using System.Web.Mvc;
 using OCMS.Common.CustomClasses;
 using System.Net.NetworkInformation;
 using System.Web.Security;
+using System.Web.Services.Description;
 namespace OCMS.Areas.Users.Controllers
 {
+
+    [CustomModelValidator]
     public class AccountController : CookiesService
     {
         private readonly UserServices userServices = new UserServices();
@@ -51,6 +54,7 @@ namespace OCMS.Areas.Users.Controllers
         [HttpPost]
         public ActionResult AddUser(AddUserDto dto)
         {
+
             //for image
             dto.ImageUrl = ImageUpload(dto.Imagefile);
             //Calling service
@@ -63,6 +67,59 @@ namespace OCMS.Areas.Users.Controllers
             FormsAuthentication.SignOut();
             return RedirectToAction("Login");
         }
+
+
+        public ActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+        //Forget Password , Generate OTP
+        [HttpPost]
+        public ActionResult ForgetPasswordUser(string email)
+        {
+            var user = userServices.GetUserByEmail(email);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Email not found" },JsonRequestBehavior.AllowGet);
+            }
+
+            string otp = new Random().Next(100000, 999999).ToString();
+
+            userServices.SaveOtp(user.UserId, otp);
+
+            var emailService = new EmailOTPService();
+            emailService.SendOtp(user.Email, otp);
+
+            return Json(new { success = true, message = "OTP sent to your email" }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        // Reset Password
+        [HttpPost]
+        public ActionResult ResetPasswordUser(string email, string otp, string newPassword)
+        {
+            var user = userServices.GetUserByEmail(email);
+            if (user == null)
+            {
+                return Json(new { success = false, message = "Email not found" }, JsonRequestBehavior.AllowGet);
+            }
+
+            bool validOtp = userServices.VerifyOtp(user.UserId, otp);
+            if (!validOtp)
+            {
+                return Json(new { success = false, message = "Invalid OTP" }, JsonRequestBehavior.AllowGet);
+            }
+
+            userServices.UpdatePassword(user.UserId, newPassword);
+
+            return Json(new { success = true, message = "Password updated successfully" }, JsonRequestBehavior.AllowGet);
+        }
+
         public string ImageUpload(HttpPostedFileBase File)
         {
             try
