@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.UI.WebControls;
 
 namespace OCMS.Repositories
 {
@@ -41,8 +42,16 @@ namespace OCMS.Repositories
 
         public bool VerifyOtp(Guid userid,string otp)
         {
-            var cred = ocmsDb.UsersCreadentials.FirstOrDefault(x=>x.UserId==userid);
-            return cred != null && cred.OTP == otp;
+            var cred = ocmsDb.UsersCreadentials.FirstOrDefault(x => x.UserId == userid);
+
+            if (cred == null || cred.OTP != otp)
+                return false;
+
+            // OTP matched → invalidate immediately
+            cred.OTP = null;
+            ocmsDb.SaveChanges();
+
+            return true;
         }
 
         public void UpdatePassword(Guid userId, byte[] passwordHash, byte[] passwordSalt)
@@ -56,5 +65,6 @@ namespace OCMS.Repositories
                 ocmsDb.SaveChanges();
             }
         }
+
     }
 }

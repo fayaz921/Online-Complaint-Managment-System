@@ -139,21 +139,6 @@ namespace OCMS.Services
         {
             return userRepos.LoginCheckRepo(email).MapGetUserDto();
 
-            //var user = userRepos.LoginCheckRepo(email);
-            //if (user == null) return null;
-
-            //var role = userRoleRepository.GetRoleByUserId(user.UserId);
-
-            //return new GetUserDto
-            //{
-            //    UserId = user.UserId,
-            //    FullName = user.FullName,
-            //    Email = user.Email,
-            //    Role = role,
-            //    ImageLink = user.ImageLink,
-            //    Status = user.Status,
-            //    CreatedAt = user.CreatedAt
-            //};
         }
 
         public void SaveOtp(Guid userid,string otp)
@@ -171,5 +156,6 @@ namespace OCMS.Services
             PasswordEncryptor.CreatePasswordHashandSalt(newpassword, out byte[] hash, out byte[] salt);
             usercread.UpdatePassword(userid, hash, salt);
         }
+
     }
 }

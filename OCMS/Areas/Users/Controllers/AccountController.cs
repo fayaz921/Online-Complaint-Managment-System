@@ -37,16 +37,17 @@ namespace OCMS.Areas.Users.Controllers
 
             if (response != null)
             {
+                FormsAuthentication.SetAuthCookie(response.UserId.ToString(), true);
+                return Json(operationStatus, JsonRequestBehavior.AllowGet);
+
                 //if (!IsExistCookie(CookiesKey.UserId))     //cookies check if login info doesn't exist then save it 
                 //{
                 //    RemoveCookies(CookiesKey.UserId);        
                 //    AppendCookies(CookiesKey.UserId,response.UserId.ToString(), DateTime.Now.AddDays(2));
                 //    return Json(operationStatus, JsonRequestBehavior.AllowGet);
                 //}
-
                 //AppendCookies(CookiesKey.UserId, response.UserId.ToString(), DateTime.Now.AddDays(2));
-                FormsAuthentication.SetAuthCookie(response.UserId.ToString(), true);
-                return Json(operationStatus, JsonRequestBehavior.AllowGet);
+
             }
             return Json(operationStatus, JsonRequestBehavior.AllowGet);
         }
@@ -141,5 +142,6 @@ namespace OCMS.Areas.Users.Controllers
                 return null;
             }
         }
+  
     }
 }

@@ -20,7 +20,7 @@ namespace OCMS.Services
 
                     using (var mail = new MailMessage("mfayaz21703@gmail.com", toEmail))
                     {
-                        mail.Subject = "Your OTP Code";
+                        mail.Subject = "Your OTP Code Don't Share With anyone";
                         mail.Body = $"Your OTP code is: {otp}";
                         mail.IsBodyHtml = false;
 
