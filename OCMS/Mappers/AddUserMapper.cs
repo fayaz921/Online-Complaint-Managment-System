@@ -14,7 +14,7 @@ namespace OCMS.Mappers
                 UserId = Guid.NewGuid(),
                 FullName= Dto.FirstName+" "+Dto.LastName,
                 Email= Dto.Email,
-                Role = Role.User,
+                //Role = Role.User,
                 ImageLink = Dto.ImageUrl,
                 CreatedAt = DateTime.Now.Date,
                 Status = UserStatus.Pending,

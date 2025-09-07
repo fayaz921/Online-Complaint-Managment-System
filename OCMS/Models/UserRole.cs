@@ -12,6 +12,6 @@ namespace OCMS.Models
         [Key] 
         public Guid UserRoleId { get; set; }
         public Guid UserId { get; set; }
-        public Role Role { get; set; }
+        public Role? Role { get; set; }
     }
 }

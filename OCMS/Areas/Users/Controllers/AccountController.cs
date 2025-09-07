@@ -54,7 +54,7 @@ namespace OCMS.Areas.Users.Controllers
         [HttpPost]
         public ActionResult AddUser(AddUserDto dto)
         {
-
+            
             //for image
             dto.ImageUrl = ImageUpload(dto.Imagefile);
             //Calling service

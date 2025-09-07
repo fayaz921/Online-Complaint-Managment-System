@@ -278,11 +278,16 @@
     <Compile Include="Migrations\20250902181804_MakeCategoryID%28Nullable%29incomplaintEntity.Designer.cs">
       <DependentUpon>20250902181804_MakeCategoryID%28Nullable%29incomplaintEntity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20250906054717_removeRolefromUser%28and add through UserRoleEntity%29.cs" />
+    <Compile Include="Migrations\20250906054717_removeRolefromUser%28and add through UserRoleEntity%29.Designer.cs">
+      <DependentUpon>20250906054717_removeRolefromUser%28and add through UserRoleEntity%29.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\UserRole.cs" />
     <Compile Include="Repositories\CategoryRepos\CategoryRepo.cs" />
     <Compile Include="Repositories\ComplaintRepo\ComplaintRepos.cs" />
     <Compile Include="Repositories\UserCreadentialRepository.cs" />
     <Compile Include="Repositories\UserRepos.cs" />
+    <Compile Include="Repositories\UserRoleRepo\UserRoleRepository.cs" />
     <Compile Include="Services\CategoryService\CategoryService.cs" />
     <Compile Include="Services\ComplaintService\ComplaintService.cs" />
     <Compile Include="Services\EmailOTPService.cs" />

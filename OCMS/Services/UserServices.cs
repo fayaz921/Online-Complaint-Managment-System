@@ -3,6 +3,7 @@ using OCMS.Dtos;
 using OCMS.Mappers;
 using OCMS.Models;
 using OCMS.Repositories;
+using OCMS.Repositories.UserRoleRepo;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Protocols.WSTrust;
@@ -16,7 +17,7 @@ namespace OCMS.Services
         PasswordEncryptor PasswordEncryptor = new PasswordEncryptor();
         private readonly UserRepos userRepos = new UserRepos();
         private readonly UserCreadentialRepository usercread = new UserCreadentialRepository();  //usercreadentials repo will separate it later
-
+        private readonly UserRoleRepository userRoleRepository = new UserRoleRepository();
         //method for registertion of user
         public int AddUser(AddUserDto addUser)
         {
@@ -36,22 +37,35 @@ namespace OCMS.Services
             //repo
             userRepos.AddUserRepo(UserDomain);
             usercread.AddUserCreadential(UserCreadDomain);
+            userRoleRepository.AddUserRole(UserDomain.UserId,Role.User);
+
             return (int)OperationStatus.Success;
         }
 
         //Get user data service 
+        //public IEnumerable<GetUserDto> GetUsers(UserRequestType requestType)
+        //{
+        //    if (UserRequestType.AllUsers == requestType)
+        //    {
+        //        var users = userRepos.GetAllUsersRepo();
+        //        return users.MapGetUserDto();           //mapper class which convert actual model list into dto list
+
+        //    }
+
+        //    return userRepos.GetRecordbyrequestType(requestType).MapGetUserDto();  //calling repo and mapper for getting specific user status
+
+        //}
+
         public IEnumerable<GetUserDto> GetUsers(UserRequestType requestType)
         {
             if (UserRequestType.AllUsers == requestType)
             {
-                var users = userRepos.GetAllUsersRepo();
-                return users.MapGetUserDto();           //mapper class which convert actual model list into dto list
-
+                return userRepos.GetAllUsersRepo();
             }
 
-            return userRepos.GetRecordbyrequestType(requestType).MapGetUserDto();  //calling repo and mapper for getting specific user status
-
+            return userRepos.GetRecordbyrequestType(requestType);
         }
+
 
         //  Delete user
         public int Removeservice(Guid userid)
@@ -98,9 +112,23 @@ namespace OCMS.Services
 
                 if (PasswordEncryptor.VerifyPasswordHashandSalt(userLoginDto.Password, userCreads.PasswordHash, userCreads.PasswordSalt))
                 {
+                    var role = userRoleRepository.GetRoleByUserId(UserGet.UserId);
+
                     operationStatus = OperationStatus.Success;
 
-                    return UserGet.MapGetUserDto();
+                    return new GetUserDto
+                    {
+                        UserId = UserGet.UserId,
+                        FullName = UserGet.FullName,
+                        Email = UserGet.Email,
+                        Role = role,
+                        ImageLink = UserGet.ImageLink,
+                        Status = UserGet.Status,
+                        CreatedAt = UserGet.CreatedAt
+                    };
+                    //operationStatus = OperationStatus.Success;
+
+                    //return UserGet.MapGetUserDto();
                 }
             }
             operationStatus = OperationStatus.Failure;
@@ -110,6 +138,22 @@ namespace OCMS.Services
         public GetUserDto GetUserByEmail(string email)
         {
             return userRepos.LoginCheckRepo(email).MapGetUserDto();
+
+            //var user = userRepos.LoginCheckRepo(email);
+            //if (user == null) return null;
+
+            //var role = userRoleRepository.GetRoleByUserId(user.UserId);
+
+            //return new GetUserDto
+            //{
+            //    UserId = user.UserId,
+            //    FullName = user.FullName,
+            //    Email = user.Email,
+            //    Role = role,
+            //    ImageLink = user.ImageLink,
+            //    Status = user.Status,
+            //    CreatedAt = user.CreatedAt
+            //};
         }
 
         public void SaveOtp(Guid userid,string otp)

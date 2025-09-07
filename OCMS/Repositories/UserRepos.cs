@@ -30,16 +30,58 @@ namespace OCMS.Repositories
         }
 
         //for Getting all data of user and show it in table 
-        public List<User> GetAllUsersRepo()
+        //public List<User> GetAllUsersRepo()
+        //{
+        //    return ocmsDbContext.Users.ToList();
+        //}
+
+        public List<GetUserDto> GetAllUsersRepo()
         {
-            return ocmsDbContext.Users.ToList();
+            var result = (from u in ocmsDbContext.Users
+                          join ur in ocmsDbContext.UserRoles
+                          on u.UserId equals ur.UserId
+                          select new GetUserDto
+                          {
+                              UserId = u.UserId,
+                              FullName = u.FullName,
+                              Email = u.Email,
+                              Role = ur.Role,    // ✅ coming from UserRole table
+                              ImageLink = u.ImageLink,
+                              Status = u.Status,
+                              CreatedAt = u.CreatedAt
+                          }).ToList();
+
+            return result;
         }
 
+
         //for Getting specific User Status like pending and approved etc 
-        public List<User> GetRecordbyrequestType(UserRequestType requestType)
+        //public List<User> GetRecordbyrequestType(UserRequestType requestType)
+        //{
+        //    return ocmsDbContext.Users.Where(u=>u.Status==(UserStatus)requestType).ToList();
+        //}
+
+        public List<GetUserDto> GetRecordbyrequestType(UserRequestType requestType)
         {
-            return ocmsDbContext.Users.Where(u=>u.Status==(UserStatus)requestType).ToList();
+            var result = (from u in ocmsDbContext.Users
+                          join ur in ocmsDbContext.UserRoles
+                          on u.UserId equals ur.UserId
+                          where u.Status == (UserStatus)requestType
+                          select new GetUserDto
+                          {
+                              UserId = u.UserId,
+                              FullName = u.FullName,
+                              Email = u.Email,
+                              Role = ur.Role,
+                              ImageLink = u.ImageLink,
+                              Status = u.Status,
+                              CreatedAt = u.CreatedAt
+                          }).ToList();
+
+            return result;
         }
+
+
         public void RemoveRepo(User user)
         {
             ocmsDbContext.Users.Remove(user);
