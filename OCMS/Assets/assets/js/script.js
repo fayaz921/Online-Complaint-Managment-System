@@ -369,34 +369,34 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
    // =====================
-// FEEDBACK FORM HANDLER
-// =====================
-function setupFeedbackForm() {
-    const feedbackForm = document.getElementById('feedbackForm');
-    if (!feedbackForm) return;
+    // FEEDBACK FORM HANDLER
+    // =====================
+    function setupFeedbackForm() {
+        const feedbackForm = document.getElementById('feedbackForm');
+        if (!feedbackForm) return;
 
-    feedbackForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const submitBtn = this.querySelector('button[type="submit"]');
-        if (!submitBtn) return;
-        
-        const originalBtnText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Submitting...';
-        submitBtn.disabled = true;
-        
-        setTimeout(() => {
-            submitBtn.innerHTML = '<i class="fas fa-check-circle me-2"></i> Submitted!';
+        feedbackForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = this.querySelector('button[type="submit"]');
+            if (!submitBtn) return;
+            
+            const originalBtnText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Submitting...';
+            submitBtn.disabled = true;
             
             setTimeout(() => {
-                feedbackForm.reset();
-                submitBtn.innerHTML = originalBtnText;
-                submitBtn.disabled = false;
-                alert('Thank you for your valuable feedback!');
-            }, 1500);
-        }, 2000);
-    });
-}
+                submitBtn.innerHTML = '<i class="fas fa-check-circle me-2"></i> Submitted!';
+                
+                setTimeout(() => {
+                    feedbackForm.reset();
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.disabled = false;
+                    alert('Thank you for your valuable feedback!');
+                }, 1500);
+            }, 2000);
+        });
+    }
 
     // =====================
     // TEAM CAROUSEL
@@ -453,7 +453,26 @@ function setupFeedbackForm() {
         });
     }
 
+    // =====================
+    // USER PROFILE MENU TOGGLE
+    // =====================
+    function setupUserProfileMenu() {
+        const btn = document.getElementById('userProfileBtn');
+        const menu = document.getElementById('userProfileMenu');
 
+        if (!btn || !menu) return;
+
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            menu.classList.toggle('show');
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!btn.contains(e.target) && !menu.contains(e.target)) {
+                menu.classList.remove('show');
+            }
+        });
+    }
 
     // =====================
     // INITIALIZE ALL FUNCTIONS
@@ -468,6 +487,7 @@ function setupFeedbackForm() {
         setupTrackForm();
         setupFeedbackForm();
         initTeamCarousel();
+        setupUserProfileMenu();
     }
 
     // Start the application

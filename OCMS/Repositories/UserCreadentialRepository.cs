@@ -47,7 +47,7 @@ namespace OCMS.Repositories
             if (cred == null || cred.OTP != otp)
                 return false;
 
-            // OTP matched → invalidate immediately
+            // OTP matched , invalidate immediately
             cred.OTP = null;
             ocmsDb.SaveChanges();
 

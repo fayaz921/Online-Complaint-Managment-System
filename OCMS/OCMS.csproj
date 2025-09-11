@@ -234,7 +234,9 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminHomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserManagerController.cs" />
+    <Compile Include="Areas\Admin\Controllers\UserManagmentController.cs" />
     <Compile Include="Areas\Users\Controllers\AccountController.cs" />
+    <Compile Include="Areas\Users\Controllers\UserProfilesController.cs" />
     <Compile Include="Areas\Visitors\Controllers\ComplaintController.cs" />
     <Compile Include="Areas\Visitors\Controllers\StatusController.cs" />
     <Compile Include="Areas\Visitors\Controllers\VisitorController.cs" />
@@ -2129,6 +2131,11 @@
     <Content Include="Areas\Visitors\Views\Status\StatusView.cshtml" />
     <Content Include="Areas\Users\Views\Account\ForgetPassword.cshtml" />
     <Content Include="Areas\Users\Views\Account\ResetPassword.cshtml" />
+    <Content Include="Areas\Admin\Views\Shared\_OcmsAdminLayout.cshtml" />
+    <Content Include="Areas\Admin\Views\UserManagment\Userss.cshtml" />
+    <Content Include="Areas\Admin\Views\UserManagment\_loadUserss.cshtml" />
+    <Content Include="Areas\Admin\Views\AdminHome\AdminIndex.cshtml" />
+    <Content Include="Areas\Users\Views\UserProfiles\UserProfile.cshtml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />

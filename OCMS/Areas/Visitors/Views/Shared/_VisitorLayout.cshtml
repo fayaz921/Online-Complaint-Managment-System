@@ -12,6 +12,7 @@
     <!-- Custom CSS -->
     @*<link rel="stylesheet" href="~/Assets/assets/css/main.css">*@
     <link rel="stylesheet" href="~/Assets/assets/css/main.css">
+
 </head>
 <body>
 
@@ -60,9 +61,16 @@
                                 <a class="logins-btn" href="/Admin/AdminHome/Index">Admin Side</a>
                             </li>
                         }
-                        <li class="nav-item ms-lg-3">
-                            <a class="logins-btn" href="/Users/Account/Logout">Logout</a>
+
+                        //User Profile dropdown
+                        <li class="nav-item dropdown" id="userProfileDropdown">
+                            <a href="#" class="nav-links dropbtn" id="userProfileBtn">User Profile ▾</a>
+                            <div class="dropdown-content" id="userProfileMenu">
+                                <a href="/Users/UserProfiles/UserProfile">Profile</a>
+                                <a href="/Users/Account/Logout">Sign Out</a>
+                            </div>
                         </li>
+
                     }
 
                     else

@@ -1,0 +1,146 @@
+﻿@using OCMS.Common.CustomClasses
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - OCMS Admin Panel</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- OCMS Main CSS -->
+    <link rel="stylesheet" href="~/Assets/assets/css/main.css" />
+
+    <!-- DataTables + SweetAlert -->
+    <link href="~/Assets/AdminAssets/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/Assets/AdminAssets/plugins/sweet-alert2/sweetalert2.min.css" rel="stylesheet" />
+
+    <style>
+        /* Sidebar */
+        .sidebar {
+            height: 100vh;
+            background-color: #111827; /* darker navy gray */
+            color: #fff;
+            padding-top: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 240px;
+            overflow-y: auto;
+        }
+
+            .sidebar .nav-link {
+                color: #cbd5e1;
+                font-weight: 500;
+                padding: 10px 20px;
+                border-radius: 8px;
+                margin: 4px 10px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                transition: all 0.2s ease-in-out;
+            }
+
+                .sidebar .nav-link:hover,
+                .sidebar .nav-link.active {
+                    background: linear-gradient(90deg, #1d4ed8, #2563eb);
+                    color: #fff;
+                }
+
+                .sidebar .nav-link i {
+                    width: 18px;
+                    text-align: center;
+                }
+
+        /* Content */
+        .content-wrapper {
+            margin-left: 240px;
+            padding: 20px;
+            min-height: 100vh;
+            background-color: #f3f4f6; /* light gray for dashboard */
+        }
+
+        /* Footer */
+        .footer {
+            margin-left: 240px;
+            background-color: #111827; /* match sidebar */
+            color: #cbd5e1;
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar d-flex flex-column">
+        <div class="text-center mb-4">
+            <h4 class="fw-bold">OCMS Admin</h4>
+        </div>
+        <ul class="nav flex-column">
+            <li><a href="/Admin/AdminHome/AdminIndex" class="nav-link"><i class="fa fa-home"></i> Dashboard</a></li>
+
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#usersMenu" role="button">
+                    <i class="fa fa-users"></i> User Accounts <i class="fa fa-chevron-down ms-auto"></i>
+                </a>
+                <div class="collapse" id="usersMenu">
+                    <ul class="list-unstyled ms-4">
+                        <li><a href="/Admin/UserManagment/Userss" class="nav-link">All Users</a></li>
+                        <li><a href="javascript:void(0)" onclick="GetUser('@UserRequestType.Pendingusers','Pending Users')" class="nav-link">Pending</a></li>
+                        <li><a href="javascript:void(0)" onclick="GetUser('@UserRequestType.Approvedusers','Approved Users')" class="nav-link">Approved</a></li>
+                        <li><a href="javascript:void(0)" onclick="GetUser('@UserRequestType.Rejectedusers','Rejected Users')" class="nav-link">Rejected</a></li>
+                        <li><a href="javascript:void(0)" onclick="GetUser('@UserRequestType.Suspendedusers','Suspended Users')" class="nav-link">Suspended</a></li>
+                        <li><a href="javascript:void(0)" onclick="GetUser('@UserRequestType.Warningusers','Warning Users')" class="nav-link">Warnings</a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <li><a href="/Users/Account/Register" class="nav-link"><i class="fa fa-user-plus"></i> Register</a></li>
+            <li><a href="/Users/Account/Login" class="nav-link"><i class="fa fa-sign-in-alt"></i> Login</a></li>
+            <li><a href="/Users/Account/Logout" class="nav-link text-danger"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        <main>
+            @RenderBody()
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white text-center py-2">
+        <p class="mb-0">&copy; 2025 OCMS Admin. All rights reserved.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="~/Assets/AdminAssets/assets/js/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Assets/AdminAssets/plugins/sweet-alert2/sweetalert2.min.js"></script>
+    <script src="~/Assets/AdminAssets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Assets/AdminAssets/plugins/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Assets/assets/js/script.js"></script>
+
+    @RenderSection("Loadfiles", required: false)
+
+    <script>
+        function GetUser(requestType, title) {
+            if (document.getElementById('UsersTitle')) {
+                document.getElementById('UsersTitle').textContent = title;
+            }
+
+            $.ajax({
+                type: 'GET',
+                url: "/Admin/UserManagment/GetAllUsers",
+                data: { RequestType: requestType },
+                success: function (result) {
+                    $('#loaduser').html(result);
+                    $('#datatable').DataTable();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+﻿@using OCMS.Common.CustomClasses
+
+@{
+    ViewBag.Title = "Userss";
+    Layout = "~/Areas/Admin/Views/Shared/_OcmsAdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+    <!-- Page Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-0" id="UsersTitle">All Users</h2>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 small">
+                    <li class="breadcrumb-item"><a href="/Admin/AdminHome/AdminIndex">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="#">Users</a></li>
+                    <li class="breadcrumb-item active">Data Table</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Users Table -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div id="loaduser">
+                <!-- Ajax-loaded users table -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Loadfiles {
+    <script>
+        $(document).ready(function () {
+            // Load users when page first opens
+            LoadUserPage('@(TempData["RequestType"] ?? "AllUsers")');
+        });
+
+        function LoadUserPage(requestType) {
+            $.ajax({
+                type: 'GET',
+                url: "/Admin/UserManagment/GetAllUsers",
+                data: { RequestType: requestType },
+                success: function (result) {
+                    $('#loaduser').html(result);
+                    $('#datatable').DataTable();
+                }
+            });
+        }
+
+        function UpdateStatus(userid, status) {
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Update Status!',
+                cancelButtonText: 'No, cancel!',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger m-l-10',
+                buttonsStyling: false
+            }).then(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/UserManagment/UpdateUserStatuss",
+                    data: { UserId: userid, StatusCode: status },
+                    success: function (result) {
+                        if (result == 1) {
+                            swal('Updated!', 'User status changed successfully.', 'success');
+                        }
+                    }
+                });
+            }, function (dismiss) {
+                if (dismiss === 'cancel') {
+                    swal('Cancelled', 'No changes were made.', 'error');
+                }
+            })
+        }
+
+        function Delete(userid) {
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Delete User!',
+                cancelButtonText: 'No, cancel!',
+                confirmButtonClass: 'btn btn-success',
+                cancelButtonClass: 'btn btn-danger m-l-10',
+                buttonsStyling: false
+            }).then(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/UserManagment/RemoveUsers",
+                    data: { UserId: userid },
+                    success: function (result) {
+                        if (result == @((int)OperationStatus.Success)) {
+                            swal('Deleted!', 'User removed successfully.', 'success');
+                        }
+                        else {
+                            swal('Failed!', 'Operation failed.', 'error');
+                        }
+                    }
+                });
+            }, function (dismiss) {
+                if (dismiss === 'cancel') {
+                    swal('Cancelled', 'User is safe :)', 'error');
+                }
+            })
+        }
+    </script>
+}
+
+
+
+

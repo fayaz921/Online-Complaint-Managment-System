@@ -13,5 +13,10 @@ namespace OCMS.Areas.Admin.Controllers
         {
             return View();
         }
+
+        public ActionResult AdminIndex()
+        {
+            return View();
+        }
     }
 }
