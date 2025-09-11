@@ -245,6 +245,7 @@
     <Compile Include="Authentication\CookiesKey.cs" />
     <Compile Include="Authentication\CustomModelValidator.cs" />
     <Compile Include="Authentication\UserBaseService.cs" />
+    <Compile Include="Common\CustomClasses\Enums\ComplaintEnums\ComplaintRequestType.cs" />
     <Compile Include="Common\CustomClasses\Enums\ComplaintEnums\ComplaintStatus.cs" />
     <Compile Include="Common\CustomClasses\UserRequestType.cs" />
     <Compile Include="Dtos\AddUserDto.cs" />

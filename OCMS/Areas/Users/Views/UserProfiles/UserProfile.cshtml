@@ -1,8 +1,10 @@
 ﻿
 @{
+    var user = ViewBag.User as OCMS.Dtos.GetUserDto;
+    var complaints = ViewBag.Complaints as List<OCMS.Dtos.ComplaintDtos.GetComplaintDto>;
+
     ViewBag.Title = "UserProfile";
     Layout = "~/Areas/Visitors/Views/Shared/_VisitorLayout.cshtml";
-
 
 }
 
@@ -15,9 +17,9 @@
         <div class="profile-top">
             <!-- Left: Image -->
             <div class="profile-left">
-                <img src="https://i.pravatar.cc/150?img=7" alt="User Avatar" class="profile-avatar">
-                <h2>John Doe</h2>
-                <p>Member since: Jan 2024</p>
+                <img src="@user.ImageLink" alt="User Avatar" class="profile-avatar">
+                <h2>@user.FullName</h2>
+                <p>Member since: @user.CreatedAt</p>
             </div>
 
             <!-- Right: Editable Form -->
@@ -26,15 +28,15 @@
                 <form>
                     <div class="form-group">
                         <label>Full Name</label>
-                        <input type="text" value="John Doe">
+                        <input type="text" value="@user.FullName">
                     </div>
                     <div class="form-group">
                         <label>Email</label>
-                        <input type="email" value="john.doe@example.com">
+                        <input type="email" value="@user.Email">
                     </div>
                     <div class="form-group">
-                        <label>Phone</label>
-                        <input type="text" value="+1 234 567 890">
+                        <label>Status</label>
+                        <input type="text" value="@user.Status">
                     </div>
                     <div class="form-group">
                         <label>Address</label>
@@ -49,43 +51,47 @@
 <section class="profile-section">
     <div class="profile-container">
         <!-- Complaint Records -->
+
         <div class="complaint-records">
             <h3>My Complaints</h3>
             <table>
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Category</th>
+                        <th>TrackId</th>
+                        <th>CategoryName</th>
                         <th>Description</th>
+                        <th>Location</th>
                         <th>Status</th>
-                        <th>Date</th>
+                        <th>IncidentDate</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>#1001</td>
-                        <td>Service</td>
-                        <td>Internet not working</td>
-                        <td><span class="status pending">Pending</span></td>
-                        <td>12 Jan 2025</td>
-                    </tr>
-                    <tr>
-                        <td>#1002</td>
-                        <td>Billing</td>
-                        <td>Overcharged for service</td>
-                        <td><span class="status resolved">Resolved</span></td>
-                        <td>10 Jan 2025</td>
-                    </tr>
-                    <tr>
-                        <td>#1003</td>
-                        <td>Maintenance</td>
-                        <td>Streetlight not working</td>
-                        <td><span class="status in-progress">In Progress</span></td>
-                        <td>08 Jan 2025</td>
-                    </tr>
+                    @if (complaints != null && complaints.Any())
+                    {
+                        foreach (var c in complaints)
+                        {
+                            <tr>
+                                <td>@c.TrackId</td>
+                                <td>@c.CategoryName</td>
+                                <td>@c.Description</td>
+                                <td>@c.Location</td>
+                                <td>
+                                    <span class="status @c.Status.ToString().ToLower()">
+                                        @c.Status
+                                    </span>
+                                </td>
+                                <td>@(c.IncidentDate?.ToString("dd MMM yyyy"))</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5">No complaints found.</td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
-
     </div>
 </section>

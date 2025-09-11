@@ -1,5 +1,8 @@
 ﻿using OCMS.Common.CustomClasses;
 using OCMS.Common.CustomClasses.Data;
+using OCMS.Common.CustomClasses.Enums.ComplaintEnums;
+using OCMS.Dtos;
+using OCMS.Dtos.ComplaintDtos;
 using OCMS.Models;
 using System;
 using System.Collections.Generic;
@@ -28,6 +31,57 @@ namespace OCMS.Repositories.ComplaintRepo
         {
             var complaint = ocmsDbContext.Complaints.Where(u => u.UserId == Id || u.ComplaintId == Id).FirstOrDefault();
             return complaint;
+        }
+
+        public List<GetComplaintDto> GetAllComplaints()
+        {
+            var result = (from com in ocmsDbContext.Complaints
+                          join cat in ocmsDbContext.Categories
+                            on com.CategoryId equals cat.CategoryId into catg
+                          from cat in catg.DefaultIfEmpty()
+                          select new GetComplaintDto
+                          {
+                              ComplaintId = com.ComplaintId,
+                              UserId = com.UserId,
+                              Title = com.Title,
+                              Description = com.Description,
+                              Location = com.Location,
+                              ImageUrl = com.ImageUrl,
+                              Status = com.Status,
+                              IncidentDate = com.IncidentDate,
+                              CategoryId = com.CategoryId,
+                              CategoryName = cat != null ? cat.CategoryName : null,
+                              TrackId = com.TrackId,
+                          }).ToList();
+
+            return result;
+        }
+
+        public List<GetComplaintDto> GetAllComplaintsByrequesttype(ComplaintRequestType requestType)
+        {
+            var status = (ComplaintStatus)requestType;
+
+            var result = (from com in ocmsDbContext.Complaints
+                          join cat in ocmsDbContext.Categories
+                            on com.CategoryId equals cat.CategoryId into catg
+                          from cat in catg.DefaultIfEmpty()
+                          where com.Status == status
+                          select new GetComplaintDto
+                          {
+                              ComplaintId = com.ComplaintId,
+                              UserId = com.UserId,
+                              Title = com.Title,
+                              Description = com.Description,
+                              Location = com.Location,
+                              ImageUrl = com.ImageUrl,
+                              Status = com.Status,
+                              IncidentDate = com.IncidentDate,
+                              CategoryId = com.CategoryId,
+                              CategoryName = cat != null ? cat.CategoryName : null,
+                              TrackId = com.TrackId,
+                          }).ToList();
+
+            return result;
         }
 
     }

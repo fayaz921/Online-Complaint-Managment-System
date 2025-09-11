@@ -1,4 +1,5 @@
 ﻿using OCMS.Common.CustomClasses;
+using OCMS.Common.CustomClasses.Enums.ComplaintEnums;
 using OCMS.Dtos.ComplaintDtos;
 using OCMS.Mappers.ComplaintMappers;
 using OCMS.Models;
@@ -30,6 +31,17 @@ namespace OCMS.Services.ComplaintService
         public GetComplaintDto GetbyIdsevice(Guid id)
         {
             return complaintrepo.GetByIdrepo(id).GetComplaintMap();
+        }
+
+
+        public List<GetComplaintDto> GetAllComplaints()
+        {
+            return complaintrepo.GetAllComplaints();
+        }
+
+        public List<GetComplaintDto> GetComplaintsByRequestType(ComplaintRequestType requestType)
+        {
+            return complaintrepo.GetAllComplaintsByrequesttype(requestType);
         }
 
 
