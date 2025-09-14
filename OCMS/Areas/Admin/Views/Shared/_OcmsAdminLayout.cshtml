@@ -1,4 +1,5 @@
 ﻿@using OCMS.Common.CustomClasses
+@using OCMS.Common.CustomClasses.Enums.ComplaintEnums
 
 <!DOCTYPE html>
 <html>
@@ -18,59 +19,7 @@
     <link href="~/Assets/AdminAssets/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" />
     <link href="~/Assets/AdminAssets/plugins/sweet-alert2/sweetalert2.min.css" rel="stylesheet" />
 
-    <style>
-        /* Sidebar */
-        .sidebar {
-            height: 100vh;
-            background-color: #111827; /* darker navy gray */
-            color: #fff;
-            padding-top: 20px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 240px;
-            overflow-y: auto;
-        }
-
-            .sidebar .nav-link {
-                color: #cbd5e1;
-                font-weight: 500;
-                padding: 10px 20px;
-                border-radius: 8px;
-                margin: 4px 10px;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                transition: all 0.2s ease-in-out;
-            }
-
-                .sidebar .nav-link:hover,
-                .sidebar .nav-link.active {
-                    background: linear-gradient(90deg, #1d4ed8, #2563eb);
-                    color: #fff;
-                }
-
-                .sidebar .nav-link i {
-                    width: 18px;
-                    text-align: center;
-                }
-
-        /* Content */
-        .content-wrapper {
-            margin-left: 240px;
-            padding: 20px;
-            min-height: 100vh;
-            background-color: #f3f4f6; /* light gray for dashboard */
-        }
-
-        /* Footer */
-        .footer {
-            margin-left: 240px;
-            background-color: #111827; /* match sidebar */
-            color: #cbd5e1;
-        }
-
-    </style>
+    
 </head>
 <body>
     <!-- Sidebar -->
@@ -88,11 +37,27 @@
                 <div class="collapse" id="usersMenu">
                     <ul class="list-unstyled ms-4">
                         <li><a href="/Admin/UserManagment/Userss" class="nav-link">All Users</a></li>
-                        <li><a href="javascript:void(0)" onclick="GetUser('@UserRequestType.Pendingusers','Pending Users')" class="nav-link">Pending</a></li>
-                        <li><a href="javascript:void(0)" onclick="GetUser('@UserRequestType.Approvedusers','Approved Users')" class="nav-link">Approved</a></li>
-                        <li><a href="javascript:void(0)" onclick="GetUser('@UserRequestType.Rejectedusers','Rejected Users')" class="nav-link">Rejected</a></li>
-                        <li><a href="javascript:void(0)" onclick="GetUser('@UserRequestType.Suspendedusers','Suspended Users')" class="nav-link">Suspended</a></li>
-                        <li><a href="javascript:void(0)" onclick="GetUser('@UserRequestType.Warningusers','Warning Users')" class="nav-link">Warnings</a></li>
+                        <li><a href="javascript:void(0)" onclick="GetUser('@UserRequestType.Pendingusers')" class="nav-link">Pending</a></li>
+                        <li><a href="javascript:void(0)" onclick="GetUser('@UserRequestType.Approvedusers')" class="nav-link">Approved</a></li>
+                        <li><a href="javascript:void(0)" onclick="GetUser('@UserRequestType.Rejectedusers')" class="nav-link">Rejected</a></li>
+                        <li><a href="javascript:void(0)" onclick="GetUser('@UserRequestType.Suspendedusers')" class="nav-link">Suspended</a></li>
+                        <li><a href="javascript:void(0)" onclick="GetUser('@UserRequestType.Warningusers')" class="nav-link">Warnings</a></li>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="collapse" href="#complaintsMenu" role="button">
+                    <i class="fa fa-users"></i> Complaints <i class="fa fa-chevron-down ms-auto"></i>
+                </a>
+                <div class="collapse" id="complaintsMenu">
+                    <ul class="list-unstyled ms-4">
+                        <li><a href="/Admin/ComplaintManagment/Complaints" class="nav-link">All Complaints</a></li>
+                        <li><a href="javascript:void(0)" onclick="GetComplaint('@ComplaintRequestType.PendingComplaints')" class="nav-link">Pending Complaints</a></li>
+                        <li><a href="javascript:void(0)" onclick="GetComplaint('@ComplaintRequestType.InprogressComplaints')" class="nav-link">Inprogress Complaints</a></li>
+                        <li><a href="javascript:void(0)" onclick="GetComplaint('@ComplaintRequestType.RejectedComplaints')" class="nav-link">Rejected Complaints</a></li>
+                        <li><a href="javascript:void(0)" onclick="GetComplaint('@ComplaintRequestType.ResolvedComplaints')" class="nav-link">Resolved Complaints</a></li>
+                        
                     </ul>
                 </div>
             </li>
@@ -126,17 +91,26 @@
     @RenderSection("Loadfiles", required: false)
 
     <script>
-        function GetUser(requestType, title) {
-            if (document.getElementById('UsersTitle')) {
-                document.getElementById('UsersTitle').textContent = title;
-            }
-
+        function GetUser(requestType) {
             $.ajax({
                 type: 'GET',
                 url: "/Admin/UserManagment/GetAllUsers",
                 data: { RequestType: requestType },
                 success: function (result) {
                     $('#loaduser').html(result);
+                    $('#datatable').DataTable();
+                }
+            });
+        }
+
+
+        function GetComplaint(requestType) {
+            $.ajax({
+                type: 'GET',
+                url: "/Admin/ComplaintManagment/GetAllComplaints",
+                data: { RequestType: requestType },
+                success: function (result) {
+                    $('#loadcomplaints').html(result);
                     $('#datatable').DataTable();
                 }
             });

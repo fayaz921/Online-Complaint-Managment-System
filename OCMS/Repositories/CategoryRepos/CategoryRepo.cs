@@ -15,5 +15,6 @@ namespace OCMS.Repositories.CategoryRepos
         {
             return ocmsDbContext.Categories.ToList();
         }
+
     }
 }

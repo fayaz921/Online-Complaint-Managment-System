@@ -233,6 +233,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AdminHomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ComplaintManagmentController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserManagerController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserManagmentController.cs" />
     <Compile Include="Areas\Users\Controllers\AccountController.cs" />
@@ -2120,7 +2121,6 @@
     <Content Include="Assets\AdminAssets\plugins\tinymce\skins\lightgray\fonts\tinymce.ttf" />
     <Content Include="Assets\AdminAssets\plugins\tinymce\skins\lightgray\fonts\tinymce.woff" />
     <Content Include="Assets\AdminAssets\plugins\tinymce\themes\inlite\src\test\.eslintrc" />
-    <Content Include="Areas\Admin\Views\UserManager\GetAllUser.cshtml" />
     <Content Include="Areas\Admin\Views\UserManager\Users.cshtml" />
     <Content Include="Areas\Users\Views\Account\Login.cshtml" />
     <Content Include="Areas\Visitors\Views\web.config" />
@@ -2137,6 +2137,8 @@
     <Content Include="Areas\Admin\Views\UserManagment\_loadUserss.cshtml" />
     <Content Include="Areas\Admin\Views\AdminHome\AdminIndex.cshtml" />
     <Content Include="Areas\Users\Views\UserProfiles\UserProfile.cshtml" />
+    <Content Include="Areas\Admin\Views\ComplaintManagment\Complaints.cshtml" />
+    <Content Include="Areas\Admin\Views\ComplaintManagment\_loadComplaints.cshtml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />

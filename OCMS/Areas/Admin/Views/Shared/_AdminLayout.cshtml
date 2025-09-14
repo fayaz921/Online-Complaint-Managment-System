@@ -170,15 +170,31 @@
                                 @* Two UserRequestType parameters inside Getuser function one is for getting Userdata for the specific UserStatus when Users click on leftbar buttons and
                                     the second one is for changing users title when user click on leftbar buttons \\\\\\\  you can write the second one in  single quotes ' ' as well *@
 
-                                <li><a href="/Admin/UserManager/Users" onclick="GetUser( '@(UserRequestType.AllUsers) ' ,'@(UserRequestType.AllUsers) ')">All Users</a></li>
-                                <li><a href="javascript:void(0);" onclick="GetUser( '@(UserRequestType.Pendingusers) ' ,'@(UserRequestType.Pendingusers) ')">Pending Users</a></li>
-                                <li><a href="javascript:void(0);" onclick="GetUser( '@(UserRequestType.Approvedusers) ' ,'@(UserRequestType.Approvedusers) ')">Approved Users</a></li>
-                                <li><a href="javascript:void(0);" onclick="GetUser( '@(UserRequestType.Rejectedusers) ' ,'@(UserRequestType.Rejectedusers) ')">Rejected Users</a></li>
-                                <li><a href="javascript:void(0);" onclick="GetUser( '@(UserRequestType.Suspendedusers) ','@(UserRequestType.Suspendedusers) ')">Suspended Users</a></li>
-                                <li><a href="javascript:void(0);" onclick="GetUser( '@(UserRequestType.Warningusers) ','@(UserRequestType.Warningusers) ')">Warning Users</a></li>
+                                <li><a href="/Admin/UserManager/Users" onclick="GetUser( '@(UserRequestType.AllUsers) ' )">All Users</a></li>
+                                <li><a href="javascript:void(0);" onclick="GetUser( '@(UserRequestType.Pendingusers) ' )">Pending Users</a></li>
+                                <li><a href="javascript:void(0);" onclick="GetUser( '@(UserRequestType.Approvedusers) ' )">Approved Users</a></li>
+                                <li><a href="javascript:void(0);" onclick="GetUser( '@(UserRequestType.Rejectedusers) ' )">Rejected Users</a></li>
+                                <li><a href="javascript:void(0);" onclick="GetUser( '@(UserRequestType.Suspendedusers) ')">Suspended Users</a></li>
+                                <li><a href="javascript:void(0);" onclick="GetUser( '@(UserRequestType.Warningusers) ')">Warning Users</a></li>
 
                             </ul>
                         </li>
+
+
+
+                        <li>
+                            <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-table-settings"></i><span>Complaints <span class="float-right menu-arrow"><i class="mdi mdi-plus"></i></span> </span></a>
+                            <ul class="submenu">
+
+                                <li><a href="/Admin/UserManager/Users" onclick="GetUser( '@(UserRequestType.AllUsers) ' )">All Complaints</a></li>
+                                <li><a href="javascript:void(0);" onclick="GetUser( '@(UserRequestType.Pendingusers) ' )">Pending Complaints</a></li>
+                                <li><a href="javascript:void(0);" onclick="GetUser( '@(UserRequestType.Approvedusers) ' )">Inprogress Complaints,</a></li>
+                                <li><a href="javascript:void(0);" onclick="GetUser( '@(UserRequestType.Rejectedusers) ' )">Rejected Complaints</a></li>
+                                <li><a href="javascript:void(0);" onclick="GetUser( '@(UserRequestType.Suspendedusers) ')">Resolved Complaints</a></li>
+             
+                            </ul>
+                        </li>
+
 
                         <li>
                             <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-google-pages"></i><span> User Side <span class="float-right menu-arrow"><i class="mdi mdi-plus"></i></span> </span></a>
@@ -205,7 +221,7 @@
     <!-- ============================================================== -->
     <div class="content-page"> </div>
     <div>
-          @RenderBody()
+        @RenderBody()
     </div>
 
     <footer class="footer">
@@ -247,9 +263,9 @@
 
 <script>
 
-    function GetUser(requestType, Title) {
-        //This id is in the Users view page and i use it for changing users title
-        document.getElementById('UsersTitle').textContent = Title;
+    function GetUser(requestType) {
+        ////This id is in the Users view page and i use it for changing users title
+        //document.getElementById('UsersTitle').textContent = Title;
         $.ajax({
             type: 'Get',
             url: "/Admin/UserManager/GetAllUser",

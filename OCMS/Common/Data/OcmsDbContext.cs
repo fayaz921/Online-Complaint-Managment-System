@@ -6,7 +6,7 @@ namespace OCMS.Common.CustomClasses.Data
 {
     public class OcmsDbContext:DbContext
     {
-
+            
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured) 

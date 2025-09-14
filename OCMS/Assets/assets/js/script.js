@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 submitBtn.disabled = false;
                 
                 if (email && password) {
-                    window.location.href = 'index.html';
+                    window.location.href = '/Visitors/Visitor/Index';
                 }
             }, 1500);
         });

@@ -11,7 +11,7 @@ namespace OCMS.Areas.Admin.Controllers
     public class UserManagmentController : Controller
     {
         // GET: Admin/UserManagment
-        // GET: Admin/UserManager
+      
         private readonly UserServices userServices = new UserServices();
 
         public ActionResult Userss(UserRequestType RequestType = UserRequestType.AllUsers)
@@ -40,5 +40,6 @@ namespace OCMS.Areas.Admin.Controllers
             return Json(response, JsonRequestBehavior.AllowGet);
         }
 
+       
     }
 }

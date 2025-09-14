@@ -7,10 +7,10 @@ namespace OCMS.Common.CustomClasses.Enums.ComplaintEnums
 {
     public enum ComplaintRequestType
     {
-        AllComplaints,
         PendingComplaints,
         InprogressComplaints,
+        RejectedComplaints,
         ResolvedComplaints,
-        RejectedComplaints
+        AllComplaints
     }
 }

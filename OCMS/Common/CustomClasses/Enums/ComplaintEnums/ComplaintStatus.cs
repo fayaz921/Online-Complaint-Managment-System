@@ -9,7 +9,7 @@ namespace OCMS.Common.CustomClasses.Enums.ComplaintEnums
     {
         Pending,
         Inprogress,
-        Resolved,
-        Rejected
+        Rejected,
+        Resolved
     }
 }

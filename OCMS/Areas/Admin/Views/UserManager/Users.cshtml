@@ -57,8 +57,7 @@
     <script>
 
         $(document).ready(function () {
-             //first "AllUsers " is for Users requesttype and second one is for changing the Users status title
-            LoadUserPage('@(TempData["RequestType"] ?? "AllUsers")', 'AllUsers');
+            LoadUserPage('@(TempData["RequestType"] ?? "AllUsers")');
         });
 
         function LoadUserPage(requestType) {

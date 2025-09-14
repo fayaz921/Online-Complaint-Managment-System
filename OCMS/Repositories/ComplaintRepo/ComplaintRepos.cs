@@ -33,6 +33,10 @@ namespace OCMS.Repositories.ComplaintRepo
             return complaint;
         }
 
+        //public List<Complaint> GetAllComplaints()
+        //{
+        //    return ocmsDbContext.Complaints.ToList();
+        //}
         public List<GetComplaintDto> GetAllComplaints()
         {
             var result = (from com in ocmsDbContext.Complaints
@@ -59,6 +63,10 @@ namespace OCMS.Repositories.ComplaintRepo
 
         public List<GetComplaintDto> GetAllComplaintsByrequesttype(ComplaintRequestType requestType)
         {
+            if(requestType == ComplaintRequestType.AllComplaints)
+            {
+                return GetAllComplaints();
+            }
             var status = (ComplaintStatus)requestType;
 
             var result = (from com in ocmsDbContext.Complaints
@@ -83,6 +91,32 @@ namespace OCMS.Repositories.ComplaintRepo
 
             return result;
         }
+
+
+       
+
+        public bool UpdateComplaintStatus(Guid complaintid, ComplaintStatus status)
+        {
+            var complaintstatus = ocmsDbContext.Complaints.FirstOrDefault(u => u.ComplaintId == complaintid);
+            if (complaintstatus == null)
+            {
+                return false;
+            }
+            complaintstatus.Status = status;
+            ocmsDbContext.Complaints.Update(complaintstatus); //
+            ocmsDbContext.SaveChanges();
+            return true;
+
+        }
+
+
+        public void RemoveComplaint(Complaint complaint)
+        {
+            ocmsDbContext.Complaints.Remove(complaint);
+            ocmsDbContext.SaveChanges();
+        }
+
+
 
     }
 }

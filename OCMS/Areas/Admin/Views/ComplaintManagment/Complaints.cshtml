@@ -1,15 +1,15 @@
 ﻿@using OCMS.Common.CustomClasses
-
 @{
-    ViewBag.Title = "Userss";
+    ViewBag.Title = "Complaints";
     Layout = "~/Areas/Admin/Views/Shared/_OcmsAdminLayout.cshtml";
 }
+
 
 <div class="container-fluid">
     <!-- Page Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <h2 class="fw-bold mb-0" id="UsersTitle">Users</h2>
+            <h2 class="fw-bold mb-0" id="ComplaintTitle">Complaints</h2>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 small">
                     <li class="breadcrumb-item"><a href="/Admin/AdminHome/AdminIndex">Dashboard</a></li>
@@ -23,33 +23,35 @@
     <!-- Users Table -->
     <div class="card shadow-sm">
         <div class="card-body">
-            <div id="loaduser">
+            <div id="loadcomplaints">
                 <!-- Ajax-loaded users table -->
             </div>
         </div>
     </div>
 </div>
 
+
 @section Loadfiles {
     <script>
         $(document).ready(function () {
             // Load users when page first opens
-            LoadUserPage('@(TempData["RequestType"] ?? "AllUsers")');
+            LoadComplaintPage('@(TempData["RequestType"] ?? "AllComplaints")');
         });
 
-        function LoadUserPage(requestType) {
+        function LoadComplaintPage(requestType) {
             $.ajax({
                 type: 'GET',
-                url: "/Admin/UserManagment/GetAllUsers",
+                url: "/Admin/ComplaintManagment/GetAllComplaints",
                 data: { RequestType: requestType },
                 success: function (result) {
-                    $('#loaduser').html(result);
+                    $('#loadcomplaints').html(result);
                     $('#datatable').DataTable();
                 }
             });
         }
 
-        function UpdateStatus(userid, status) {
+
+        function UpdateStatus(complaintid, status) {
             swal({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -61,13 +63,14 @@
                 cancelButtonClass: 'btn btn-danger m-l-10',
                 buttonsStyling: false
             }).then(function () {
+                debugger;
                 $.ajax({
                     type: "POST",
-                    url: "/Admin/UserManagment/UpdateUserStatuss",
-                    data: { UserId: userid, StatusCode: status },
+                    url: "/Admin/ComplaintManagment/UpdateComplaintStatus",
+                    data: { complaintid: complaintid, StatusCode: status },
                     success: function (result) {
                         if (result == 1) {
-                            swal('Updated!', 'User status changed successfully.', 'success');
+                            swal('Updated!', 'Complaint status changed successfully.', 'success');
                         }
                     }
                 });
@@ -75,10 +78,10 @@
                 if (dismiss === 'cancel') {
                     swal('Cancelled', 'No changes were made.', 'error');
                 }
-            })
-        }
+            });
+   }
 
-        function Delete(userid) {
+        function Delete(complaintid) {
             swal({
                 title: 'Are you sure?',
                 text: "You won't be able to revert this!",
@@ -90,13 +93,15 @@
                 cancelButtonClass: 'btn btn-danger m-l-10',
                 buttonsStyling: false
             }).then(function () {
+                debugger;
                 $.ajax({
                     type: "POST",
-                    url: "/Admin/UserManagment/RemoveUsers",
-                    data: { UserId: userid },
+                    url: "/Admin/ComplaintManagment/RemoveComplaint",
+                    data: { complaintid: complaintid },
                     success: function (result) {
+                        debugger;
                         if (result == @((int)OperationStatus.Success)) {
-                            swal('Deleted!', 'User removed successfully.', 'success');
+                            swal('Deleted!', 'Complaint removed successfully.', 'success');
                         }
                         else {
                             swal('Failed!', 'Operation failed.', 'error');
@@ -105,13 +110,10 @@
                 });
             }, function (dismiss) {
                 if (dismiss === 'cancel') {
-                    swal('Cancelled', 'User is safe :)', 'error');
+                    swal('Cancelled', 'Complaint is safe :)', 'error');
                 }
-            })
-        }
+            });
+   }
     </script>
 }
-
-
-
 
