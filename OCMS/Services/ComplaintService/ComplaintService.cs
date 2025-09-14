@@ -15,26 +15,40 @@ using System.Web;
 
 namespace OCMS.Services.ComplaintService
 {
-    
+
     public class ComplaintService : Category
     {
         private readonly ComplaintRepos complaintrepo = new ComplaintRepos();
         private readonly CategoryRepo categoryRepo = new CategoryRepo();
         public int AddComplaintService(AddComplaintDto complaintdto)
         {
-            if (complaintdto != null)
+            try
             {
-                complaintrepo.AddComplaintRepo(complaintdto.AddComplaintMap());
-                return (int)OperationStatus.Success;
+                if (complaintdto != null)
+                {
+                    complaintrepo.AddComplaintRepo(complaintdto.AddComplaintMap());
+                    return (int)OperationStatus.Success;
 
+                }
+                return (int)OperationStatus.Failure;
             }
-            return (int)OperationStatus.Failure;
+            catch (Exception)
+            {
+                throw;
+            }
 
         }
 
         public GetComplaintDto GetbyIdsevice(Guid id)
         {
-            return complaintrepo.GetByIdrepo(id).GetComplaintMap();
+            try
+            {
+                return complaintrepo.GetByIdrepo(id).GetComplaintMap();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
 
@@ -60,33 +74,61 @@ namespace OCMS.Services.ComplaintService
             //              }).ToList();
 
             //return result;
-            return complaintrepo.GetAllComplaints();
+            try
+            {
+                return complaintrepo.GetAllComplaints();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public List<GetComplaintDto> GetComplaintsByRequestType(ComplaintRequestType requestType)
         {
-            return complaintrepo.GetAllComplaintsByrequesttype(requestType);
+            try
+            {
+                return complaintrepo.GetAllComplaintsByrequesttype(requestType);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
 
         public bool UpdateComplaintStatus(Guid complaintid, ComplaintStatus complaintStatus)
         {
-            return complaintrepo.UpdateComplaintStatus(complaintid, complaintStatus);
+            try
+            {
+                return complaintrepo.UpdateComplaintStatus(complaintid, complaintStatus);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
 
         public int Removeservice(Guid complaintid)
         {
-            var complaint = complaintrepo.GetByIdrepo(complaintid);           //get user from repo
-            if (complaint == null)                                  //if id is null return false and stop here, so user will not be deleted
+            try
             {
-                return (int)OperationStatus.Failure;
-            }
+                var complaint = complaintrepo.GetByIdrepo(complaintid);           //get user from repo
+                if (complaint == null)                                  //if id is null return false and stop here, so user will not be deleted
+                {
+                    return (int)OperationStatus.Failure;
+                }
 
-            //remove user 
-            complaintrepo.RemoveComplaint(complaint);
-           
-            return (int)OperationStatus.Success;
+                //remove user 
+                complaintrepo.RemoveComplaint(complaint);
+
+                return (int)OperationStatus.Success;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
         }
 

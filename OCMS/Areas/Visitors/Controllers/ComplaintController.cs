@@ -29,19 +29,26 @@ namespace OCMS.Areas.Visitors.Controllers
         [HttpPost]
         public ActionResult SaveComplaint(AddComplaintDto complaintdto)
         {
-
-            var userid = User.Identity.Name;
-            var user = userServices.GetbyIDService(Guid.Parse(userid));
-            if (user.Status == UserStatus.Pending || user.Status == UserStatus.Suspended || user.Status == UserStatus.Rejected)
+            try
             {
-                return Json(new { requestUrl = Url.Action("StatusView", "Status", new { area = "Visitors" }) });
+
+                var userid = User.Identity.Name;
+                var user = userServices.GetbyIDService(Guid.Parse(userid));
+                if (user.Status == UserStatus.Pending || user.Status == UserStatus.Suspended || user.Status == UserStatus.Rejected)
+                {
+                    return Json(new { requestUrl = Url.Action("StatusView", "Status", new { area = "Visitors" }) });
+                }
+
+                complaintdto.ImageUrl = complaintdto.ImageFile != null ? ImageUpload(complaintdto.ImageFile) : null;
+                complaintdto.UserId = Guid.Parse(userid);
+
+                var response = complaintservice.AddComplaintService(complaintdto);
+                return Json(response, JsonRequestBehavior.AllowGet);
             }
-
-            complaintdto.ImageUrl = complaintdto.ImageFile != null ? ImageUpload(complaintdto.ImageFile) : null;
-            complaintdto.UserId = Guid.Parse(userid);
-
-            var response = complaintservice.AddComplaintService(complaintdto);
-            return Json(response, JsonRequestBehavior.AllowGet);
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public string ImageUpload(HttpPostedFileBase File)

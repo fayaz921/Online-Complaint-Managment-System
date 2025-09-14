@@ -15,34 +15,55 @@ namespace OCMS.Repositories.UserRoleRepo
         // Add role for user
         public void AddUserRole(Guid userId, Role role)
         {
-            var userRole = new UserRole
+            try
             {
-                UserRoleId = Guid.NewGuid(),
-                UserId = userId,
-                Role = role
-            };
+                var userRole = new UserRole
+                {
+                    UserRoleId = Guid.NewGuid(),
+                    UserId = userId,
+                    Role = role
+                };
 
-            ocmsDbContext.UserRoles.Add(userRole);
-            ocmsDbContext.SaveChanges();
+                ocmsDbContext.UserRoles.Add(userRole);
+                ocmsDbContext.SaveChanges();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         // Get role by userId
         public Role? GetRoleByUserId(Guid userId)
         {
-            return ocmsDbContext.UserRoles
+            try
+            {
+                return ocmsDbContext.UserRoles
                 .Where(ur => ur.UserId == userId)
                 .Select(ur => ur.Role)
                 .FirstOrDefault();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         // Update role
         public void UpdateRole(Guid userId, Role newRole)
         {
-            var userRole = ocmsDbContext.UserRoles.FirstOrDefault(ur => ur.UserId == userId);
-            if (userRole != null)
+            try
             {
-                userRole.Role = newRole;
-                ocmsDbContext.SaveChanges();
+                var userRole = ocmsDbContext.UserRoles.FirstOrDefault(ur => ur.UserId == userId);
+                if (userRole != null)
+                {
+                    userRole.Role = newRole;
+                    ocmsDbContext.SaveChanges();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
     }

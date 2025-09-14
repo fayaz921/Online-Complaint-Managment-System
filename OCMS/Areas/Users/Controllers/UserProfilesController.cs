@@ -18,13 +18,20 @@ namespace OCMS.Areas.Users.Controllers
         // GET: Users/UserProfile
         public ActionResult UserProfile()
         {
-            var userid = User.Identity.Name;
-            var user = userServices.GetbyIDService(Guid.Parse(userid));
-            var complaints = complaintService.GetAllComplaints();
+            try
+            {
+                var userid = User.Identity.Name;
+                var user = userServices.GetbyIDService(Guid.Parse(userid));
+                var complaints = complaintService.GetAllComplaints();
 
-            ViewBag.User = user;    
-            ViewBag.Complaints = complaints;
-            return View();
+                ViewBag.User = user;
+                ViewBag.Complaints = complaints;
+                return View();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
 

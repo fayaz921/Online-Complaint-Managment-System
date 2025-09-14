@@ -13,7 +13,14 @@ namespace OCMS.Repositories.CategoryRepos
 
         public List<Category> GetAllRepo()
         {
-            return ocmsDbContext.Categories.ToList();
+            try
+            {
+                return ocmsDbContext.Categories.ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
     }

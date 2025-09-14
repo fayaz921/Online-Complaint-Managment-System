@@ -12,17 +12,24 @@ namespace OCMS.Areas.Visitors.Controllers
 {
     public class StatusController : CookiesService
     {
-        UserServices userServices = new UserServices(); 
+        UserServices userServices = new UserServices();
         // GET: Visitors/Status
         public ActionResult StatusView()
         {
-            GetUserStatusDto getUserStatusDto = new GetUserStatusDto();
-            if(IsExistCookie(CookiesKey.UserId))
+            try
             {
-                var user = userServices.GetbyIDService(Guid.Parse(GetCookies(CookiesKey.UserId)));
-                getUserStatusDto.Status = (UserStatus)user.Status;
+                GetUserStatusDto getUserStatusDto = new GetUserStatusDto();
+                if (IsExistCookie(CookiesKey.UserId))
+                {
+                    var user = userServices.GetbyIDService(Guid.Parse(GetCookies(CookiesKey.UserId)));
+                    getUserStatusDto.Status = (UserStatus)user.Status;
+                }
+                return View(getUserStatusDto);
             }
-            return View(getUserStatusDto);
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

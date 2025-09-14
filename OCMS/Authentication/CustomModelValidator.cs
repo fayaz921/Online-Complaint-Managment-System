@@ -10,25 +10,32 @@ namespace OCMS.Authentication
     {
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
-            var controller = filterContext.Controller as Controller;
-            if (controller != null && !controller.ModelState.IsValid) 
+            try
             {
-                //collect all models error
-                var errors = controller.ModelState
-                    .Where(x => x.Value.Errors.Count > 0)
-                    .ToDictionary(
-                    kvp => kvp.Key,
-                    kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
-                    );
-                filterContext.Result = new JsonResult
+                var controller = filterContext.Controller as Controller;
+                if (controller != null && !controller.ModelState.IsValid)
                 {
-                    Data = new { success = false, errors },
-                    JsonRequestBehavior = JsonRequestBehavior.AllowGet,
-                };
-                return;
-            }
+                    //collect all models error
+                    var errors = controller.ModelState
+                        .Where(x => x.Value.Errors.Count > 0)
+                        .ToDictionary(
+                        kvp => kvp.Key,
+                        kvp => kvp.Value.Errors.Select(e => e.ErrorMessage).ToArray()
+                        );
+                    filterContext.Result = new JsonResult
+                    {
+                        Data = new { success = false, errors },
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet,
+                    };
+                    return;
+                }
 
-            base.OnActionExecuted(filterContext);
+                base.OnActionExecuted(filterContext);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

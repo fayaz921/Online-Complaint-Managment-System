@@ -16,16 +16,30 @@ namespace OCMS.Repositories
         //for adding user
         public void AddUserRepo(User user)
         {
-            ocmsDbContext.Users.Add(user);
+            try
+            {
+                ocmsDbContext.Users.Add(user);
 
-            ocmsDbContext.SaveChanges();
+                ocmsDbContext.SaveChanges();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         //for dublicate email
         public bool ExistEmail(string email)
         {
-            var existuser = ocmsDbContext.Users.Any(u => u.Email == email);
-            return existuser;
+            try
+            {
+                var existuser = ocmsDbContext.Users.Any(u => u.Email == email);
+                return existuser;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
         }
 
@@ -37,21 +51,28 @@ namespace OCMS.Repositories
 
         public List<GetUserDto> GetAllUsersRepo()
         {
-            var result = (from u in ocmsDbContext.Users
-                          join ur in ocmsDbContext.UserRoles
-                          on u.UserId equals ur.UserId
-                          select new GetUserDto
-                          {
-                              UserId = u.UserId,
-                              FullName = u.FullName,
-                              Email = u.Email,
-                              Role = ur.Role,    // ✅ coming from UserRole table
-                              ImageLink = u.ImageLink,
-                              Status = u.Status,
-                              CreatedAt = u.CreatedAt
-                          }).ToList();
+            try
+            {
+                var result = (from u in ocmsDbContext.Users
+                              join ur in ocmsDbContext.UserRoles
+                              on u.UserId equals ur.UserId
+                              select new GetUserDto
+                              {
+                                  UserId = u.UserId,
+                                  FullName = u.FullName,
+                                  Email = u.Email,
+                                  Role = ur.Role,    // ✅ coming from UserRole table
+                                  ImageLink = u.ImageLink,
+                                  Status = u.Status,
+                                  CreatedAt = u.CreatedAt
+                              }).ToList();
 
-            return result;
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
 
@@ -63,55 +84,90 @@ namespace OCMS.Repositories
 
         public List<GetUserDto> GetRecordbyrequestType(UserRequestType requestType)
         {
-            var result = (from u in ocmsDbContext.Users
-                          join ur in ocmsDbContext.UserRoles
-                          on u.UserId equals ur.UserId
-                          where u.Status == (UserStatus)requestType
-                          select new GetUserDto
-                          {
-                              UserId = u.UserId,
-                              FullName = u.FullName,
-                              Email = u.Email,
-                              Role = ur.Role,
-                              ImageLink = u.ImageLink,
-                              Status = u.Status,
-                              CreatedAt = u.CreatedAt
-                          }).ToList();
+            try
+            {
+                var result = (from u in ocmsDbContext.Users
+                              join ur in ocmsDbContext.UserRoles
+                              on u.UserId equals ur.UserId
+                              where u.Status == (UserStatus)requestType
+                              select new GetUserDto
+                              {
+                                  UserId = u.UserId,
+                                  FullName = u.FullName,
+                                  Email = u.Email,
+                                  Role = ur.Role,
+                                  ImageLink = u.ImageLink,
+                                  Status = u.Status,
+                                  CreatedAt = u.CreatedAt
+                              }).ToList();
 
-            return result;
+                return result;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
 
         public void RemoveRepo(User user)
         {
-            ocmsDbContext.Users.Remove(user);
-            ocmsDbContext.SaveChanges();
+            try
+            {
+                ocmsDbContext.Users.Remove(user);
+                ocmsDbContext.SaveChanges();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public User GetbyIdrepo(Guid userid)
         {
-           return ocmsDbContext.Users.Where(u => u.UserId == userid).FirstOrDefault();
+            try
+            {
+                return ocmsDbContext.Users.Where(u => u.UserId == userid).FirstOrDefault();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
         }
 
         public bool UpdateStatusRepo(Guid userid, UserStatus status)
         {
-            var userstatus = ocmsDbContext.Users.FirstOrDefault(u=>u.UserId == userid);
-            if (userstatus == null)
+            try
             {
-                return false;
+                var userstatus = ocmsDbContext.Users.FirstOrDefault(u => u.UserId == userid);
+                if (userstatus == null)
+                {
+                    return false;
+                }
+                userstatus.Status = status;
+                ocmsDbContext.Users.Update(userstatus); //
+                ocmsDbContext.SaveChanges();
+                return true;
             }
-            userstatus.Status = status;
-            ocmsDbContext.Users.Update(userstatus); //
-            ocmsDbContext.SaveChanges();
-            return true;
+            catch (Exception)
+            {
+                throw;
+            }
 
         }
 
 
         public User LoginCheckRepo(string Email)
         {
-            return ocmsDbContext.Users.Where(e=>e.Email==Email).FirstOrDefault();
+            try
+            {
+                return ocmsDbContext.Users.Where(e => e.Email == Email).FirstOrDefault();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
     }

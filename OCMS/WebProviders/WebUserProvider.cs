@@ -41,13 +41,21 @@ namespace OCMS.WebProviders
 
         public override string[] GetRolesForUser(string userid)
         {
-            using(var context = new OcmsDbContext())
+            try
             {
-                var result = (from user in context.Users
-                              join role in context.UserRoles on user.UserId equals role.UserId
-                              where user.UserId == Guid.Parse(userid)
-                              select ((Role)role.Role).ToString()).ToArray();
-                return result;
+
+                using (var context = new OcmsDbContext())
+                {
+                    var result = (from user in context.Users
+                                  join role in context.UserRoles on user.UserId equals role.UserId
+                                  where user.UserId == Guid.Parse(userid)
+                                  select ((Role)role.Role).ToString()).ToArray();
+                    return result;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 

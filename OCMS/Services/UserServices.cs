@@ -21,25 +21,33 @@ namespace OCMS.Services
         //method for registertion of user
         public int AddUser(AddUserDto addUser)
         {
-            //checking email
-            var result = userRepos.ExistEmail(addUser.Email);
-            if (result)
+            try
             {
-                return (int)OperationStatus.EmailDuplicate;            //if email already exist it will stop here
+
+                //checking email
+                var result = userRepos.ExistEmail(addUser.Email);
+                if (result)
+                {
+                    return (int)OperationStatus.EmailDuplicate;            //if email already exist it will stop here
+                }
+
+                //logic
+                //for user
+                var UserDomain = addUser.AddUserDtotoUser();
+                //for usercreadentials
+
+                var UserCreadDomain = PasswordEncryptor.Map(UserDomain.UserId, addUser.Password);
+                //repo
+                userRepos.AddUserRepo(UserDomain);
+                usercread.AddUserCreadential(UserCreadDomain);
+                userRoleRepository.AddUserRole(UserDomain.UserId, Role.User);
+
+                return (int)OperationStatus.Success;
             }
-
-            //logic
-            //for user
-            var UserDomain = addUser.AddUserDtotoUser();
-            //for usercreadentials
-
-            var UserCreadDomain = PasswordEncryptor.Map(UserDomain.UserId, addUser.Password);
-            //repo
-            userRepos.AddUserRepo(UserDomain);
-            usercread.AddUserCreadential(UserCreadDomain);
-            userRoleRepository.AddUserRole(UserDomain.UserId,Role.User);
-
-            return (int)OperationStatus.Success;
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         //Get user data service 
@@ -58,103 +66,175 @@ namespace OCMS.Services
 
         public IEnumerable<GetUserDto> GetUsers(UserRequestType requestType)
         {
-            if (UserRequestType.AllUsers == requestType)
+            try
             {
-                return userRepos.GetAllUsersRepo();
-            }
 
-            return userRepos.GetRecordbyrequestType(requestType);
+                if (UserRequestType.AllUsers == requestType)
+                {
+                    return userRepos.GetAllUsersRepo();
+                }
+
+                return userRepos.GetRecordbyrequestType(requestType);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
 
         //  Delete user
         public int Removeservice(Guid userid)
         {
-            var user = userRepos.GetbyIdrepo(userid);           //get user from repo
-            if (user == null)                                  //if id is null return false and stop here, so user will not be deleted
+            try
             {
-                return (int)OperationStatus.Failure;
-            }
 
-            var userCreadential = usercread.GetbyIDCread(userid);     //get creadential for creadrepo by id 
-            if (userCreadential == null)
+                var user = userRepos.GetbyIdrepo(userid);           //get user from repo
+                if (user == null)                                  //if id is null return false and stop here, so user will not be deleted
+                {
+                    return (int)OperationStatus.Failure;
+                }
+
+                var userCreadential = usercread.GetbyIDCread(userid);     //get creadential for creadrepo by id 
+                if (userCreadential == null)
+                {
+                    return (int)OperationStatus.Failure;
+                }
+
+                //remove user 
+                userRepos.RemoveRepo(user);
+                usercread.RemoveCreadential(userCreadential);
+                return (int)OperationStatus.Success;
+            }
+            catch (Exception)
             {
-                return (int)OperationStatus.Failure;
+                throw;
             }
-
-            //remove user 
-            userRepos.RemoveRepo(user);
-            usercread.RemoveCreadential(userCreadential);
-            return (int)OperationStatus.Success;
 
         }
 
 
         public GetUserDto GetbyIDService(Guid userid)
         {
-            return userRepos.GetbyIdrepo(userid).MapGetUserDto();
-            
+            try
+            {
+
+                return userRepos.GetbyIdrepo(userid).MapGetUserDto();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
 
         }
 
         public bool UpdateStatusService(Guid userid, UserStatus userStatus)
         {
-            return userRepos.UpdateStatusRepo(userid, userStatus);
+            try
+            {
+
+                return userRepos.UpdateStatusRepo(userid, userStatus);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
 
         public GetUserDto LoginCheckService(UserLoginDto userLoginDto, out OperationStatus operationStatus)
         {
-            var UserGet = userRepos.LoginCheckRepo(userLoginDto.Email);
-            if (UserGet != null)
+            try
             {
-                var userCreads = usercread.GetbyIDCread(UserGet.UserId);
 
-                if (PasswordEncryptor.VerifyPasswordHashandSalt(userLoginDto.Password, userCreads.PasswordHash, userCreads.PasswordSalt))
+                var UserGet = userRepos.LoginCheckRepo(userLoginDto.Email);
+                if (UserGet != null)
                 {
-                    var role = userRoleRepository.GetRoleByUserId(UserGet.UserId);
+                    var userCreads = usercread.GetbyIDCread(UserGet.UserId);
 
-                    operationStatus = OperationStatus.Success;
-
-                    return new GetUserDto
+                    if (PasswordEncryptor.VerifyPasswordHashandSalt(userLoginDto.Password, userCreads.PasswordHash, userCreads.PasswordSalt))
                     {
-                        UserId = UserGet.UserId,
-                        FullName = UserGet.FullName,
-                        Email = UserGet.Email,
-                        Role = role,
-                        ImageLink = UserGet.ImageLink,
-                        Status = UserGet.Status,
-                        CreatedAt = UserGet.CreatedAt
-                    };
-                    //operationStatus = OperationStatus.Success;
+                        var role = userRoleRepository.GetRoleByUserId(UserGet.UserId);
 
-                    //return UserGet.MapGetUserDto();
+                        operationStatus = OperationStatus.Success;
+
+                        return new GetUserDto
+                        {
+                            UserId = UserGet.UserId,
+                            FullName = UserGet.FullName,
+                            Email = UserGet.Email,
+                            Role = role,
+                            ImageLink = UserGet.ImageLink,
+                            Status = UserGet.Status,
+                            CreatedAt = UserGet.CreatedAt
+                        };
+                        //operationStatus = OperationStatus.Success;
+
+                        //return UserGet.MapGetUserDto();
+                    }
                 }
+                operationStatus = OperationStatus.Failure;
+                return null;
             }
-            operationStatus = OperationStatus.Failure;
-            return null;
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public GetUserDto GetUserByEmail(string email)
         {
-            return userRepos.LoginCheckRepo(email).MapGetUserDto();
+            try
+            {
+
+                return userRepos.LoginCheckRepo(email).MapGetUserDto();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
         }
 
-        public void SaveOtp(Guid userid,string otp)
+        public void SaveOtp(Guid userid, string otp)
         {
-            usercread.SaveOtp(userid,otp);
+            try
+            {
+
+                usercread.SaveOtp(userid, otp);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        public bool VerifyOtp(Guid userid,string otp)
+        public bool VerifyOtp(Guid userid, string otp)
         {
-            return usercread.VerifyOtp(userid,otp);
+            try
+            {
+
+                return usercread.VerifyOtp(userid, otp);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
-        public void UpdatePassword(Guid userid,string newpassword)
+        public void UpdatePassword(Guid userid, string newpassword)
         {
-            PasswordEncryptor.CreatePasswordHashandSalt(newpassword, out byte[] hash, out byte[] salt);
-            usercread.UpdatePassword(userid, hash, salt);
+            try
+            {
+
+                PasswordEncryptor.CreatePasswordHashandSalt(newpassword, out byte[] hash, out byte[] salt);
+                usercread.UpdatePassword(userid, hash, salt);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
     }

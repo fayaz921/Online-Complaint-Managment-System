@@ -14,7 +14,14 @@ namespace OCMS.Services.CategoryService
 
         public List<GetCategoryDto> GetAllService()
         {
-            return categoryrepo.GetAllRepo().MapGetCategory();
+            try
+            {
+                return categoryrepo.GetAllRepo().MapGetCategory();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

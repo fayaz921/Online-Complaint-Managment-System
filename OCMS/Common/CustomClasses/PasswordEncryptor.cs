@@ -9,21 +9,35 @@ namespace OCMS.Common.CustomClasses
 {
     public class PasswordEncryptor
     {
-        public void CreatePasswordHashandSalt(string password,out byte[] hash, out byte[] salt)
+        public void CreatePasswordHashandSalt(string password, out byte[] hash, out byte[] salt)
         {
-            using(var hmac= new HMACSHA512())
+            try
             {
-                salt = hmac.Key;
-                hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+                using (var hmac = new HMACSHA512())
+                {
+                    salt = hmac.Key;
+                    hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
         public bool VerifyPasswordHashandSalt(string password, byte[] hash, byte[] salt)
         {
-            using(var hmac=new HMACSHA512(salt))
+            try
             {
-                var Computehash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-                return hash.SequenceEqual(Computehash);
+                using (var hmac = new HMACSHA512(salt))
+                {
+                    var Computehash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+                    return hash.SequenceEqual(Computehash);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
     }

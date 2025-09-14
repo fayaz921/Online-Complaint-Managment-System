@@ -33,40 +33,60 @@ namespace OCMS.Areas.Users.Controllers
         [HttpPost]
         public ActionResult LoginCheck(UserLoginDto userLoginDto)
         {
-            var response = userServices.LoginCheckService(userLoginDto, out Common.CustomClasses.OperationStatus operationStatus);
-
-            if (response != null)
+            try
             {
-                FormsAuthentication.SetAuthCookie(response.UserId.ToString(), true);
+                var response = userServices.LoginCheckService(userLoginDto, out Common.CustomClasses.OperationStatus operationStatus);
+
+                if (response != null)
+                {
+                    FormsAuthentication.SetAuthCookie(response.UserId.ToString(), true);
+                    return Json(operationStatus, JsonRequestBehavior.AllowGet);
+
+                    //if (!IsExistCookie(CookiesKey.UserId))     //cookies check if login info doesn't exist then save it 
+                    //{
+                    //    RemoveCookies(CookiesKey.UserId);        
+                    //    AppendCookies(CookiesKey.UserId,response.UserId.ToString(), DateTime.Now.AddDays(2));
+                    //    return Json(operationStatus, JsonRequestBehavior.AllowGet);
+                    //}
+                    //AppendCookies(CookiesKey.UserId, response.UserId.ToString(), DateTime.Now.AddDays(2));
+
+                }
                 return Json(operationStatus, JsonRequestBehavior.AllowGet);
-
-                //if (!IsExistCookie(CookiesKey.UserId))     //cookies check if login info doesn't exist then save it 
-                //{
-                //    RemoveCookies(CookiesKey.UserId);        
-                //    AppendCookies(CookiesKey.UserId,response.UserId.ToString(), DateTime.Now.AddDays(2));
-                //    return Json(operationStatus, JsonRequestBehavior.AllowGet);
-                //}
-                //AppendCookies(CookiesKey.UserId, response.UserId.ToString(), DateTime.Now.AddDays(2));
-
             }
-            return Json(operationStatus, JsonRequestBehavior.AllowGet);
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         [HttpPost]
         public ActionResult AddUser(AddUserDto dto)
         {
-            
-            //for image
-            dto.ImageUrl = ImageUpload(dto.Imagefile);
-            //Calling service
-            var response = userServices.AddUser(dto);
-            return Json(response, JsonRequestBehavior.AllowGet);
+            try
+            {
+                //for image
+                dto.ImageUrl = ImageUpload(dto.Imagefile);
+                //Calling service
+                var response = userServices.AddUser(dto);
+                return Json(response, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public ActionResult Logout()
         {
-            FormsAuthentication.SignOut();
-            return RedirectToAction("Login");
+            try
+            {
+                FormsAuthentication.SignOut();
+                return RedirectToAction("Login");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
 
@@ -79,20 +99,27 @@ namespace OCMS.Areas.Users.Controllers
         [HttpPost]
         public ActionResult ForgetPasswordUser(string email)
         {
-            var user = userServices.GetUserByEmail(email);
-            if (user == null)
+            try
             {
-                return Json(new { success = false, message = "Email not found" },JsonRequestBehavior.AllowGet);
+                var user = userServices.GetUserByEmail(email);
+                if (user == null)
+                {
+                    return Json(new { success = false, message = "Email not found" }, JsonRequestBehavior.AllowGet);
+                }
+
+                string otp = new Random().Next(100000, 999999).ToString();
+
+                userServices.SaveOtp(user.UserId, otp);
+
+                var emailService = new EmailOTPService();
+                emailService.SendOtp(user.Email, otp);
+
+                return Json(new { success = true, message = "OTP sent to your email" }, JsonRequestBehavior.AllowGet);
             }
-
-            string otp = new Random().Next(100000, 999999).ToString();
-
-            userServices.SaveOtp(user.UserId, otp);
-
-            var emailService = new EmailOTPService();
-            emailService.SendOtp(user.Email, otp);
-
-            return Json(new { success = true, message = "OTP sent to your email" }, JsonRequestBehavior.AllowGet);
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public ActionResult ResetPassword()
@@ -104,21 +131,28 @@ namespace OCMS.Areas.Users.Controllers
         [HttpPost]
         public ActionResult ResetPasswordUser(string email, string otp, string newPassword)
         {
-            var user = userServices.GetUserByEmail(email);
-            if (user == null)
+            try
             {
-                return Json(new { success = false, message = "Email not found" }, JsonRequestBehavior.AllowGet);
-            }
+                var user = userServices.GetUserByEmail(email);
+                if (user == null)
+                {
+                    return Json(new { success = false, message = "Email not found" }, JsonRequestBehavior.AllowGet);
+                }
 
-            bool validOtp = userServices.VerifyOtp(user.UserId, otp);
-            if (!validOtp)
+                bool validOtp = userServices.VerifyOtp(user.UserId, otp);
+                if (!validOtp)
+                {
+                    return Json(new { success = false, message = "Invalid OTP" }, JsonRequestBehavior.AllowGet);
+                }
+
+                userServices.UpdatePassword(user.UserId, newPassword);
+
+                return Json(new { success = true, message = "Password updated successfully" }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
             {
-                return Json(new { success = false, message = "Invalid OTP" }, JsonRequestBehavior.AllowGet);
+                throw;
             }
-
-            userServices.UpdatePassword(user.UserId, newPassword);
-
-            return Json(new { success = true, message = "Password updated successfully" }, JsonRequestBehavior.AllowGet);
         }
 
         public string ImageUpload(HttpPostedFileBase File)
@@ -142,6 +176,6 @@ namespace OCMS.Areas.Users.Controllers
                 return null;
             }
         }
-  
+
     }
 }
