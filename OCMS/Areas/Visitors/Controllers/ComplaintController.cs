@@ -51,6 +51,30 @@ namespace OCMS.Areas.Visitors.Controllers
             }
         }
 
+        public ActionResult TrackComplaint()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult GetComplaintbyTrackID(int trackid)
+        {
+            try
+            {
+
+                var complaint = complaintservice.GetComplaintByTrackId(trackid);
+                if (complaint == null)
+                {
+                    return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+                }
+
+                return Json(new { success = true, data = complaint }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         public string ImageUpload(HttpPostedFileBase File)
         {
             try

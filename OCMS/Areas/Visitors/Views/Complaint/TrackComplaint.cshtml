@@ -1,0 +1,134 @@
+﻿@model OCMS.Dtos.ComplaintDtos.GetComplaintDto
+@{
+    ViewBag.Title = "Track Complaint";
+    Layout = "~/Areas/Visitors/Views/Shared/_VisitorLayout.cshtml";
+}
+
+<section class="track-complaint-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+
+                <h2><i class="fas fa-search me-2"></i> Track Your Complaint</h2>
+
+                <!-- Complaint Form -->
+                <form id="trackForm" onsubmit="TrackComplaints(event)">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text">C-</span>
+                        <input type="text" id="complaintId" name="TrackId" class="form-control"
+                               placeholder="Enter your 4-digit complaint number" required />
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search me-1"></i> Track
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Complaint Details -->
+                <div id="complaintDetails" style="display:@(Model != null ? "block" : "none")">
+                    <div class="card p-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h4>Complaint Details</h4>
+                            <span class="badge bg-success" id="statusBadge">
+                                @Model?.Status
+                            </span>
+                        </div>
+                        <hr />
+
+                        <p><strong>ID:</strong> C-@Model?.TrackId</p>
+                        <p><strong>Title:</strong> @Model?.Title</p>
+                        <p><strong>Description:</strong> @Model?.Description</p>
+                        <p><strong>Category:</strong> @Model?.CategoryName</p>
+                        <p><strong>Location:</strong> @Model?.Location</p>
+                        <p><strong>Date Submitted:</strong> @Model?.IncidentDate?.ToString("dd MMM yyyy")</p>
+
+                        <!-- Actions -->
+                        <div class="mt-4">
+                            <button class="btn btn-outline-primary">
+                                <i class="fas fa-download me-1"></i> Download Report
+                            </button>
+                            <button class="btn btn-primary ms-2">
+                                <i class="fas fa-print me-1"></i> Print
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Not Found -->
+                <div class="alert alert-danger mt-3" id="complaintNotFound" style="display:none;">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    Complaint not found. Please check your Complaint ID and try again.
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="~/Assets/assets/js/jquery.min.js"></script>
+<script>
+    function TrackComplaints(event) {
+        event.preventDefault();
+        var frmdata = new FormData(document.getElementById("trackForm"));
+
+        $.ajax({
+            type: "POST",
+            url: "/Visitors/Complaint/GetComplaintbyTrackID",
+            data: frmdata,
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                if (result.success) {
+                    var c = result.data;
+                    $("#complaintDetails").show();
+                    $("#complaintNotFound").hide();
+
+                    // set badge color dynamically based on status
+                    let badgeClass = "bg-secondary";
+                    if (c.Status === "Resolved") badgeClass = "bg-success";
+                    else if (c.Status === "Pending") badgeClass = "bg-warning text-dark";
+                    else if (c.Status === "InProgress") badgeClass = "bg-info";
+
+                    $("#complaintDetails").html(`
+                        <div class="card p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h4>Complaint Details</h4>
+                                <span class="badge ${badgeClass}" id="statusBadge">${c.Status}</span>
+                            </div>
+                            <hr/>
+
+                            <p><strong>ID:</strong> C-${c.TrackId}</p>
+                            <p><strong>Title:</strong> ${c.Title}</p>
+                            <p><strong>Description:</strong> ${c.Description}</p>
+                            <p><strong>Category:</strong> ${c.CategoryName}</p>
+                            <p><strong>Location:</strong> ${c.Location}</p>
+                           <p><strong>Date Submitted:</strong> ${formatJsonDate(c.IncidentDate)}</p>
+
+
+                            <div class="mt-4">
+                                <button class="btn btn-outline-primary">
+                                    <i class="fas fa-download me-1"></i> Download Report
+                                </button>
+                                <button class="btn btn-primary ms-2">
+                                    <i class="fas fa-print me-1"></i> Print
+                                </button>
+                            </div>
+                        </div>
+                    `);
+                } else {
+                    $("#complaintDetails").hide();
+                    $("#complaintNotFound").show();
+                }
+            }
+        });
+    }
+
+    function formatJsonDate(jsonDate) {
+        if (!jsonDate) return "";
+        var timestamp = parseInt(jsonDate.replace(/\/Date\((\d+)\)\//, '$1'));
+        var date = new Date(timestamp);
+        return date.toLocaleDateString("en-GB", {
+            day: "2-digit", month: "short", year: "numeric"
+        });
+    }
+
+</script>

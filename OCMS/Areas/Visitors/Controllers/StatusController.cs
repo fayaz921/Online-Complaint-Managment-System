@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace OCMS.Areas.Visitors.Controllers
 {
+    [Authorize]
     public class StatusController : CookiesService
     {
         UserServices userServices = new UserServices();
@@ -18,12 +19,15 @@ namespace OCMS.Areas.Visitors.Controllers
         {
             try
             {
+                var userid = User.Identity.Name;
                 GetUserStatusDto getUserStatusDto = new GetUserStatusDto();
-                if (IsExistCookie(CookiesKey.UserId))
-                {
-                    var user = userServices.GetbyIDService(Guid.Parse(GetCookies(CookiesKey.UserId)));
-                    getUserStatusDto.Status = (UserStatus)user.Status;
-                }
+                var user = userServices.GetbyIDService(Guid.Parse(userid));
+                getUserStatusDto.Status = (UserStatus)user.Status;
+                //if (IsExistCookie(CookiesKey.UserId))
+                //{
+                //    var user = userServices.GetbyIDService(Guid.Parse(GetCookies(CookiesKey.UserId)));
+                //    getUserStatusDto.Status = (UserStatus)user.Status;
+                //}
                 return View(getUserStatusDto);
             }
             catch (Exception)

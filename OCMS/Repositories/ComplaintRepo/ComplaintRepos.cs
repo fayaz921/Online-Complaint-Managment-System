@@ -120,9 +120,6 @@ namespace OCMS.Repositories.ComplaintRepo
             }
         }
 
-
-
-
         public bool UpdateComplaintStatus(Guid complaintid, ComplaintStatus status)
         {
             try
@@ -157,5 +154,51 @@ namespace OCMS.Repositories.ComplaintRepo
                 throw;
             }
         }
+
+        //public Complaint GetComplaintbyTrackId(int trackid)
+        //{
+        //    try
+        //    {
+        //        return ocmsDbContext.Complaints.Where(t => t.TrackId == trackid).FirstOrDefault();
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //}
+
+
+        public GetComplaintDto GetComplaintbyTrackId(int trackid)
+        {
+            try
+            {
+                var complaint = (from c in ocmsDbContext.Complaints
+                                 join cat in ocmsDbContext.Categories
+                                     on c.CategoryId equals cat.CategoryId into catJoin
+                                 from cat in catJoin.DefaultIfEmpty()
+                                 where c.TrackId == trackid
+                                 select new GetComplaintDto
+                                 {
+                                     ComplaintId = c.ComplaintId,
+                                     UserId = c.UserId,
+                                     Title = c.Title,
+                                     Description = c.Description,
+                                     CategoryId = c.CategoryId,
+                                     CategoryName = cat.CategoryName, // ✅ joined value
+                                     ImageUrl = c.ImageUrl,
+                                     Status = c.Status,
+                                     Location = c.Location,
+                                     IncidentDate = c.IncidentDate,
+                                     TrackId = c.TrackId
+                                 }).FirstOrDefault();
+
+                return complaint;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
     }
 }

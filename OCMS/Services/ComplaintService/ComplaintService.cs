@@ -54,6 +54,15 @@ namespace OCMS.Services.ComplaintService
 
         public List<GetComplaintDto> GetAllComplaints()
         {
+            try
+            {
+                return complaintrepo.GetAllComplaints();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
             //var result = (from com in complaintrepo.GetAllComplaints()
             //              join cat in categoryRepo.GetAllRepo()
             //              on com.CategoryId equals cat.CategoryId into catg
@@ -74,14 +83,7 @@ namespace OCMS.Services.ComplaintService
             //              }).ToList();
 
             //return result;
-            try
-            {
-                return complaintrepo.GetAllComplaints();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+
         }
 
         public List<GetComplaintDto> GetComplaintsByRequestType(ComplaintRequestType requestType)
@@ -130,6 +132,18 @@ namespace OCMS.Services.ComplaintService
                 throw;
             }
 
+        }
+
+        public GetComplaintDto GetComplaintByTrackId(int trackid)
+        {
+            try
+            {
+               return complaintrepo.GetComplaintbyTrackId(trackid);           
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
 

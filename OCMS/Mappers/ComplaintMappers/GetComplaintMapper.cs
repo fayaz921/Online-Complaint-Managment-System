@@ -17,12 +17,15 @@ namespace OCMS.Mappers.ComplaintMappers
                 ComplaintId = complaint.ComplaintId,
                 Description = complaint.Description,
                 ImageUrl = complaint.ImageUrl,
+                Title = complaint.Title,
                 IncidentDate = complaint.IncidentDate,
                 Location = complaint.Location,
                 CategoryId = complaint.CategoryId,
                 Status = complaint.Status,
                 UserId = complaint.UserId,
                 TrackId = complaint.TrackId,
+              
+
 
             };
         }

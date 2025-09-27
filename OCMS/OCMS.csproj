@@ -2139,6 +2139,7 @@
     <Content Include="Areas\Users\Views\UserProfiles\UserProfile.cshtml" />
     <Content Include="Areas\Admin\Views\ComplaintManagment\Complaints.cshtml" />
     <Content Include="Areas\Admin\Views\ComplaintManagment\_loadComplaints.cshtml" />
+    <Content Include="Areas\Visitors\Views\Complaint\TrackComplaint.cshtml" />
     <None Include="Scripts\jquery-3.7.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.0.js" />
     <Content Include="Scripts\jquery-3.7.0.min.js" />
