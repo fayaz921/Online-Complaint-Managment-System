@@ -40,7 +40,7 @@ namespace OCMS.Areas.Users.Controllers
                 if (response != null)
                 {
                     FormsAuthentication.SetAuthCookie(response.UserId.ToString(), true);
-                    return Json(operationStatus, JsonRequestBehavior.AllowGet);
+                    return Json((int)operationStatus, JsonRequestBehavior.AllowGet);
 
                     //if (!IsExistCookie(CookiesKey.UserId))     //cookies check if login info doesn't exist then save it 
                     //{
@@ -51,7 +51,7 @@ namespace OCMS.Areas.Users.Controllers
                     //AppendCookies(CookiesKey.UserId, response.UserId.ToString(), DateTime.Now.AddDays(2));
 
                 }
-                return Json(operationStatus, JsonRequestBehavior.AllowGet);
+                return Json((int)operationStatus, JsonRequestBehavior.AllowGet);
             }
             catch (Exception)
             {
